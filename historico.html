@@ -618,7 +618,7 @@
 
   <script>
     // ── Configuração ──────────────────────────────────────────────────
-    const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbwuwiRYwPLono0BvRynQy53AKlhLoQtzNUlSi8KSOuc-TFFwp9uY2iblK27Z9iOENjy/exec';
+    const BACKEND_URL = 'COLE_AQUI_A_URL_DO_WEB_APP';
 
     // ── Dados ─────────────────────────────────────────────────────────
     let todasEvolucoes = [];
@@ -758,15 +758,8 @@
 
             <div class="timeline-row">
               <div class="timeline-field">
-                <div class="timeline-label">Procedimentos</div>
-                <div class="timeline-value">${ev.procedimentos || '-'}</div>
-              </div>
-            </div>
-
-            <div class="timeline-row">
-              <div class="timeline-field">
-                <div class="timeline-label">Observações</div>
-                <div class="timeline-value">${ev.observacoes || '-'}</div>
+                <div class="timeline-label">Evolução</div>
+                <div class="timeline-value" style="white-space: pre-line;">${ev.textoCompleto || '-'}</div>
               </div>
             </div>
           </div>
