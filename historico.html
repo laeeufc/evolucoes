@@ -15,7 +15,7 @@
       --green-light: #e4f5ec;
       --red: #b91c1c;
       --red-light: #fef2f2;
-      --amber: #92401e;
+      --amber: #92400e;
       --amber-light: #fffbeb;
       --border: #d1d5db;
       --bg: #f4f6fa;
@@ -630,10 +630,16 @@
       try {
         const res = await fetch(BACKEND_URL, {
           method: 'POST',
+          redirect: 'follow',
           body: JSON.stringify(payload),
         });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
+        if (!res.ok) throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+        const texto = await res.text();
+        try {
+          return JSON.parse(texto);
+        } catch(e) {
+          throw new Error('Resposta inválida do servidor: ' + texto.substring(0, 200));
+        }
       } catch (err) {
         mostrarFeedback('error', '⚠️ Erro de conexão: ' + err.message);
         throw err;
@@ -664,7 +670,8 @@
           mostrarFeedback('error', '❌ Erro: ' + res.mensagem);
         }
       } catch (err) {
-        mostrarFeedback('error', '❌ Erro ao carregar evoluções');
+        mostrarFeedback('error', '❌ Erro ao carregar evoluções: ' + err.message);
+        console.error('Erro completo:', err);
       } finally {
         document.getElementById('loading').style.display = 'none';
       }
