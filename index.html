@@ -232,35 +232,94 @@
       .grid-2 .field { margin-bottom: 0; }
     }
 
-    /* ── Chave / validar ── */
-    .chave-row { display: flex; gap: 10px; align-items: flex-end; }
-    .chave-row input { flex: 1; min-width: 0; }
-    .btn-validar {
-      height: 54px;
-      padding: 0 20px;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-      transition: background 0.18s;
-    }
-    .btn-validar:active { background: #0e3f7a; }
+    /* ── Tela de login separada ── */
+    .tela { display: none; }
+    .tela.ativa { display: block; }
 
-    .status-chave {
-      font-size: 14px;
-      margin-top: 10px;
-      min-height: 22px;
-      padding: 0 2px;
-      font-weight: 500;
+    .login-wrap {
+      min-height: calc(100vh - 80px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 16px;
     }
-    .status-chave.ok   { color: var(--green); }
-    .status-chave.erro { color: var(--red); }
+    .login-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 32px 28px;
+      width: 100%; max-width: 400px;
+      box-shadow: 0 4px 24px rgba(21,87,160,0.08);
+    }
+    .login-icon {
+      width: 56px; height: 56px;
+      background: var(--blue-light);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin: 0 auto 20px;
+    }
+    .login-title {
+      text-align: center;
+      font-size: 20px; font-weight: 700;
+      color: var(--blue); margin-bottom: 6px;
+    }
+    .login-sub {
+      text-align: center; font-size: 14px;
+      color: var(--muted); margin-bottom: 28px;
+    }
+    .login-card .field { margin-bottom: 18px; }
+    .login-card .field label {
+      display: block; font-size: 14px;
+      font-weight: 600; color: #374151; margin-bottom: 7px;
+    }
+    .login-card .field input {
+      width: 100%; padding: 13px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 16px;
+      background: #fafafa; transition: border-color 0.18s, background 0.18s;
+      -webkit-appearance: none; min-height: 50px;
+    }
+    .login-card .field input:focus {
+      outline: none; border-color: var(--blue);
+      background: #fff; box-shadow: 0 0 0 3px rgba(21,87,160,0.1);
+    }
+    .btn-entrar {
+      width: 100%; padding: 14px;
+      background: var(--blue); color: #fff;
+      border: none; border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: background 0.18s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 50px; margin-top: 4px;
+    }
+    .btn-entrar:hover { background: #0e3f7a; }
+    .btn-entrar:disabled { opacity: 0.55; cursor: not-allowed; }
+    .login-erro {
+      display: none; margin-top: 14px;
+      padding: 10px 14px;
+      background: var(--red-light); color: var(--red);
+      border: 1px solid #fca5a5; border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 500; text-align: center;
+    }
+    .spinner-sm {
+      display: inline-block; width: 18px; height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+
+    /* ── Formulário (tela após login) ── */
+    .tela-form .steps-bar { display: flex; }
+
+    /* ── Chip do profissional no topbar ── */
+    .prof-chip {
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      padding: 5px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+      display: none; align-items: center; gap: 5px;
+      flex-shrink: 0;
+    }
 
     /* ── Lesões ── */
     .lesao-bloco {
@@ -597,60 +656,67 @@
     <div class="topbar-title">Evolução de Enfermagem</div>
     <div class="topbar-sub">Estomaterapia — Ambulatório de Curativos</div>
   </div>
-  <a id="btn-prontuarios" class="btn-prontuarios" href="https://laeeufc.github.io/evolucoes/historico.html" target="_blank">🗂️ Prontuários</a>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto;">
+    <span class="prof-chip" id="chip-profissional">👤 <span id="chip-coren"></span></span>
+    <a id="btn-prontuarios" class="btn-prontuarios" href="https://laeeufc.github.io/evolucoes/historico.html" target="_blank">🗂️ Prontuários</a>
+  </div>
 </div>
+
+<!-- ══ TELA 1 — LOGIN ══ -->
+<div class="tela ativa" id="tela-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-icon">🔐</div>
+      <div class="login-title">Acesso ao Sistema</div>
+      <div class="login-sub">Informe suas credenciais para registrar evoluções</div>
+
+      <div class="field">
+        <label for="login-coren">COREN</label>
+        <input type="text" id="login-coren" placeholder="Ex: 123456-RN"
+               autocomplete="off" inputmode="text"
+               style="text-transform:uppercase"
+               oninput="this.value=this.value.toUpperCase()"
+               onkeydown="if(event.key==='Enter') entrar()">
+      </div>
+      <div class="field">
+        <label for="login-senha">Senha</label>
+        <input type="password" id="login-senha" placeholder="••••••••"
+               autocomplete="current-password"
+               onkeydown="if(event.key==='Enter') entrar()">
+      </div>
+
+      <button class="btn-entrar" id="btn-entrar" onclick="entrar()">
+        <span id="btn-entrar-txt">Entrar</span>
+        <div class="spinner-sm" id="spinner-login" style="display:none"></div>
+      </button>
+      <div class="login-erro" id="login-erro"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TELA 2 — FORMULÁRIO ══ -->
+<div class="tela tela-form" id="tela-form">
 
 <!-- Barra de steps -->
 <div class="steps-bar" id="steps-bar">
   <div class="step-item active" onclick="irParaStep(0)" id="step-tab-0">
-    <div class="step-dot">1</div> Identificação
+    <div class="step-dot">1</div> Atendimento
   </div>
   <div class="step-item" onclick="irParaStep(1)" id="step-tab-1">
-    <div class="step-dot">2</div> Atendimento
+    <div class="step-dot">2</div> Lesões
   </div>
   <div class="step-item" onclick="irParaStep(2)" id="step-tab-2">
-    <div class="step-dot">3</div> Lesões
+    <div class="step-dot">3</div> Procedimentos
   </div>
   <div class="step-item" onclick="irParaStep(3)" id="step-tab-3">
-    <div class="step-dot">4</div> Procedimentos
-  </div>
-  <div class="step-item" onclick="irParaStep(4)" id="step-tab-4">
-    <div class="step-dot">5</div> Fotos &amp; Envio
+    <div class="step-dot">4</div> Fotos &amp; Envio
   </div>
 </div>
 
 <div class="container">
 
-  <!-- STEP 0 — Identificação do profissional -->
+  <!-- STEP 0 — Dados do atendimento -->
   <div class="section active" id="sec-0">
-    <div class="card">
-      <div class="card-title">
-        <div class="card-title-icon">🔑</div>
-        Identificação do profissional
-      </div>
-
-      <div class="field">
-        <label>COREN <span class="req">*</span></label>
-        <input type="text" id="coren" placeholder="Ex: 123456-RN" autocomplete="off" inputmode="text">
-      </div>
-
-      <div class="field">
-        <label>Senha <span class="req">*</span></label>
-        <div class="chave-row">
-          <input type="password" id="chavePrivada" placeholder="Digite sua senha" autocomplete="current-password">
-          <button class="btn-validar" onclick="verificarChave()">Validar</button>
-        </div>
-        <div class="status-chave" id="statusChave"></div>
-      </div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn-nav primary" id="btn-proximo-0" onclick="irParaStep(1)" disabled>Próximo →</button>
-    </div>
-  </div>
-
-  <!-- STEP 1 — Dados do atendimento -->
-  <div class="section" id="sec-1">
     <div class="card">
       <div class="card-title">
         <div class="card-title-icon">📅</div>
@@ -680,13 +746,12 @@
     </div>
 
     <div class="nav-row">
-      <button class="btn-nav" onclick="irParaStep(0)">← Voltar</button>
-      <button class="btn-nav primary" onclick="irParaStep(2)">Próximo →</button>
+      <button class="btn-nav primary" onclick="irParaStep(1)">Próximo →</button>
     </div>
   </div>
 
-  <!-- STEP 2 — Lesões -->
-  <div class="section" id="sec-2">
+  <!-- STEP 1 — Lesões -->
+  <div class="section" id="sec-1">
     <div class="card">
       <div class="card-title">
         <div class="card-title-icon">🩹</div>
@@ -697,13 +762,13 @@
     </div>
 
     <div class="nav-row">
-      <button class="btn-nav" onclick="irParaStep(1)">← Voltar</button>
-      <button class="btn-nav primary" onclick="irParaStep(3)">Próximo →</button>
+      <button class="btn-nav" onclick="irParaStep(0)">← Voltar</button>
+      <button class="btn-nav primary" onclick="irParaStep(2)">Próximo →</button>
     </div>
   </div>
 
-  <!-- STEP 3 — Procedimentos -->
-  <div class="section" id="sec-3">
+  <!-- STEP 2 — Procedimentos -->
+  <div class="section" id="sec-2">
     <div class="card">
       <div class="card-title">
         <div class="card-title-icon">🧴</div>
@@ -745,13 +810,13 @@
     </div>
 
     <div class="nav-row">
-      <button class="btn-nav" onclick="irParaStep(2)">← Voltar</button>
-      <button class="btn-nav primary" onclick="irParaStep(4)">Próximo →</button>
+      <button class="btn-nav" onclick="irParaStep(1)">← Voltar</button>
+      <button class="btn-nav primary" onclick="irParaStep(3)">Próximo →</button>
     </div>
   </div>
 
-  <!-- STEP 4 — Fotos & Envio -->
-  <div class="section" id="sec-4">
+  <!-- STEP 3 — Fotos & Envio -->
+  <div class="section" id="sec-3">
     <div class="card">
       <div class="card-title">
         <div class="card-title-icon">📷</div>
@@ -783,14 +848,16 @@
     </div>
 
     <div class="nav-row">
-      <button class="btn-nav" onclick="irParaStep(3)">← Voltar</button>
+      <button class="btn-nav" onclick="irParaStep(2)">← Voltar</button>
     </div>
 
-    <button id="btn-enviar" onclick="enviar()" disabled>✉️ Enviar Evolução</button>
-    <div class="rodape-hint" id="rodape-hint">Valide sua senha para continuar</div>
+    <button id="btn-enviar" onclick="enviar()">✉️ Enviar Evolução</button>
+    <div class="rodape-hint" id="rodape-hint"></div>
   </div>
 
 </div><!-- /container -->
+
+</div><!-- /tela-form -->
 
 <script>
   // ── CONFIGURAÇÃO ─────────────────────────────────────────────
@@ -799,7 +866,6 @@
 
   // ── Utilitário de chamada ao backend ─────────────────────────
   async function chamarBackend(payload) {
-    // Enviamos como texto simples para evitar CORS preflight
     const res = await fetch(BACKEND_URL, {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -808,14 +874,76 @@
     return res.json();
   }
 
-  // ── Navegação entre steps ────────────────────────────────────
-  let stepAtual = 0;
-  const totalSteps = 5;
+  // ── Estado do profissional logado ────────────────────────────
+  let corenLogado  = '';
+  let senhaLogada  = '';
   let chaveConfirmada = false;
 
-  function irParaStep(n) {
-    if (n > 0 && !chaveConfirmada) return;
+  // ── Telas ────────────────────────────────────────────────────
+  function mostrarTela(id) {
+    document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+    document.getElementById(id).classList.add('ativa');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
+  // ── LOGIN ────────────────────────────────────────────────────
+  async function entrar() {
+    const coren = document.getElementById('login-coren').value.trim().toUpperCase();
+    const senha = document.getElementById('login-senha').value.trim();
+    const erroEl = document.getElementById('login-erro');
+    erroEl.style.display = 'none';
+
+    if (!coren || !senha) {
+      erroEl.textContent = 'Preencha COREN e senha.';
+      erroEl.style.display = 'block';
+      return;
+    }
+
+    const btn    = document.getElementById('btn-entrar');
+    const txtBtn = document.getElementById('btn-entrar-txt');
+    const sp     = document.getElementById('spinner-login');
+
+    btn.disabled = true;
+    txtBtn.textContent = 'Verificando...';
+    sp.style.display = 'inline-block';
+
+    try {
+      const res = await chamarBackend({ action: 'validarChave', coren, chave: senha });
+
+      if (res.valida) {
+        corenLogado = coren;
+        senhaLogada = senha;
+        chaveConfirmada = true;
+
+        // Chip do profissional no topbar
+        document.getElementById('chip-coren').textContent = coren;
+        const chip = document.getElementById('chip-profissional');
+        chip.style.display = 'flex';
+
+        // Habilitar envio
+        document.getElementById('btn-enviar').disabled = false;
+        document.getElementById('rodape-hint').textContent = '';
+
+        mostrarTela('tela-form');
+      } else {
+        erroEl.textContent = '❌ COREN ou senha inválidos.';
+        erroEl.style.display = 'block';
+      }
+    } catch (err) {
+      erroEl.textContent = '⚠️ Erro de conexão: ' + err.message;
+      erroEl.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      txtBtn.textContent = 'Entrar';
+      sp.style.display = 'none';
+    }
+  }
+
+  // ── Navegação entre steps ────────────────────────────────────
+  let stepAtual = 0;
+  const totalSteps = 4;
+
+  function irParaStep(n) {
     document.getElementById(`sec-${stepAtual}`).classList.remove('active');
     document.getElementById(`step-tab-${stepAtual}`).classList.remove('active');
 
@@ -826,22 +954,6 @@
     tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function bloquearSteps() {
-    for (let i = 1; i < totalSteps; i++) {
-      document.getElementById(`step-tab-${i}`).classList.add('locked');
-    }
-    const btnProximo = document.getElementById('btn-proximo-0');
-    if (btnProximo) btnProximo.disabled = true;
-  }
-
-  function liberarSteps() {
-    for (let i = 1; i < totalSteps; i++) {
-      document.getElementById(`step-tab-${i}`).classList.remove('locked');
-    }
-    const btnProximo = document.getElementById('btn-proximo-0');
-    if (btnProximo) btnProximo.disabled = false;
   }
 
   function marcarStepConcluido(n) {
@@ -1023,8 +1135,8 @@
   // ── Envio ────────────────────────────────────────────────────
   async function enviar() {
     if (!chaveConfirmada) {
-      mostrarFeedback('erro', 'Verifique sua chave privada antes de enviar.');
-      irParaStep(0);
+      mostrarFeedback('erro', '⚠️ Faça login novamente para continuar.');
+      mostrarTela('tela-login');
       return;
     }
 
@@ -1040,14 +1152,14 @@
     if (!algumLocal) erros.push('ao menos uma localização de lesão');
 
     if (erros.length > 0) {
-      irParaStep(4);
+      irParaStep(3);
       mostrarFeedback('erro', 'Preencha os campos obrigatórios: ' + erros.join(', ') + '.');
       return;
     }
 
     const dados = {
-      chavePrivada:        val('chavePrivada'),
-      coren:               val('coren'),
+      chavePrivada:        senhaLogada,
+      coren:               corenLogado,
       data:                val('data'),
       paciente:            val('paciente'),
       limpeza:             val('limpeza'),
@@ -1067,7 +1179,7 @@
     document.getElementById('btn-enviar').disabled = true;
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('feedback').style.display = 'none';
-    irParaStep(4);
+    irParaStep(3);
 
     try {
       const res = await chamarBackend({ action: 'processarFormulario', dados });
@@ -1118,7 +1230,7 @@
 
   function limparFormulario() {
     ['data','paciente','limpeza','observacoes','coberturaPrimaria',
-     'coberturaSecundaria','orientacoes','retorno','chavePrivada','coren'].forEach(id => {
+     'coberturaSecundaria','orientacoes','retorno'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.value = '';
     });
@@ -1128,11 +1240,8 @@
     renderizarPreviews();
     totalLesoes = 0;
     adicionarLesao();
-    chaveConfirmada = false;
-    document.getElementById('statusChave').textContent = '';
-    document.getElementById('statusChave').className = 'status-chave';
-    document.getElementById('btn-enviar').disabled = true;
-    document.getElementById('rodape-hint').textContent = 'Valide sua senha para continuar';
+    document.getElementById('btn-enviar').disabled = false;
+    document.getElementById('rodape-hint').textContent = '';
     document.getElementById('sucesso-acoes').style.display = 'none';
     document.querySelector('.btn-adicionar').style.display = 'block';
     for (let i = 0; i < totalSteps; i++) {
@@ -1141,7 +1250,6 @@
       const dot = t.querySelector('.step-dot');
       dot.textContent = i + 1;
     }
-    bloquearSteps();
     document.getElementById(`sec-${stepAtual}`).classList.remove('active');
     document.getElementById(`step-tab-${stepAtual}`).classList.remove('active');
     stepAtual = 0;
@@ -1295,7 +1403,6 @@
 
   // ── Inicializar ──────────────────────────────────────────────
   adicionarLesao();
-  bloquearSteps();
 </script>
 </body>
 </html>
