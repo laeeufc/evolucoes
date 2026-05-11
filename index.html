@@ -66,6 +66,25 @@
     .topbar-title { color: #fff; font-size: 19px; font-weight: 600; line-height: 1.2; }
     .topbar-sub   { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 2px; }
 
+    .btn-prontuarios {
+      margin-left: auto;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-prontuarios:hover { background: rgba(255,255,255,0.25); }
+
     /* ── Progress steps ── */
     .steps-bar {
       background: var(--surface);
@@ -578,6 +597,7 @@
     <div class="topbar-title">Evolução de Enfermagem</div>
     <div class="topbar-sub">Estomaterapia — Ambulatório de Curativos</div>
   </div>
+  <a id="btn-prontuarios" class="btn-prontuarios" href="https://laeeufc.github.io/evolucoes/historico.html" target="_blank">🗂️ Prontuários</a>
 </div>
 
 <!-- Barra de steps -->
