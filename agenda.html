@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Agenda — Estomaterapia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1557a0;
+      --blue-light: #e8f1fb;
+      --blue-mid: #2d7dd6;
+      --green: #0f6b3c;
+      --green-light: #e4f5ec;
+      --red: #b91c1c;
+      --red-light: #fef2f2;
+      --amber: #92400e;
+      --amber-light: #fffbeb;
+      --purple: #6d28d9;
+      --purple-light: #ede9fe;
+      --border: #d1d5db;
+      --bg: #f4f6fa;
+      --surface: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --radius: 14px;
+      --radius-sm: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── Topbar ── */
+    .topbar {
+      background: var(--blue);
+      padding: 16px 20px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      gap: 12px; position: sticky; top: 0; z-index: 100;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-icon {
+      width: 42px; height: 42px;
+      background: rgba(255,255,255,0.15); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .topbar-title { color: #fff; font-size: 18px; font-weight: 600; line-height: 1.2; }
+    .topbar-sub   { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 1px; }
+    .btn-link {
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.18); color: #fff; border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: background 0.18s; min-height: 38px;
+    }
+    .btn-link:hover { background: rgba(255,255,255,0.28); }
+    .prof-chip {
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      padding: 5px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+      display: none; align-items: center; gap: 5px; flex-shrink: 0;
+    }
+
+    /* ── Telas ── */
+    .tela { display: none; }
+    .tela.ativa { display: block; }
+
+    /* ── Login ── */
+    .login-wrap {
+      min-height: calc(100vh - 74px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 16px;
+    }
+    .login-card {
+      background: var(--surface); border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 32px 28px;
+      width: 100%; max-width: 400px;
+      box-shadow: 0 4px 24px rgba(21,87,160,0.08);
+    }
+    .login-icon {
+      width: 56px; height: 56px; background: var(--blue-light);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin: 0 auto 20px;
+    }
+    .login-title { text-align: center; font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 6px; }
+    .login-sub   { text-align: center; font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 7px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 13px 14px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 16px;
+      background: #fafafa; transition: border-color 0.18s, background 0.18s;
+      -webkit-appearance: none; appearance: none; color: var(--text);
+    }
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px;
+    }
+    .field textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none; border-color: var(--blue);
+      background: #fff; box-shadow: 0 0 0 3px rgba(21,87,160,0.1);
+    }
+    .btn-primary {
+      width: 100%; padding: 14px; background: var(--blue); color: #fff;
+      border: none; border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: background 0.18s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 50px;
+    }
+    .btn-primary:hover { background: #0e3f7a; }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+    .login-erro {
+      display: none; margin-top: 14px; padding: 10px 14px;
+      background: var(--red-light); color: var(--red);
+      border: 1px solid #fca5a5; border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 500; text-align: center;
+    }
+    .spinner-sm {
+      display: inline-block; width: 18px; height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Layout principal da agenda ── */
+    .agenda-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+    @media (min-width: 760px) {
+      .agenda-layout {
+        grid-template-columns: 340px 1fr;
+        gap: 20px;
+        align-items: start;
+      }
+    }
+
+    /* ── Calendário ── */
+    .cal-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .cal-header {
+      background: var(--blue);
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cal-mes { color: #fff; font-size: 17px; font-weight: 700; }
+    .cal-nav-btn {
+      background: rgba(255,255,255,0.18); color: #fff; border: none;
+      border-radius: 8px; width: 36px; height: 36px;
+      font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.18s;
+    }
+    .cal-nav-btn:hover { background: rgba(255,255,255,0.32); }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+    }
+    .cal-dow {
+      text-align: center; padding: 10px 0 8px;
+      font-size: 11px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+    .cal-day {
+      position: relative;
+      aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 500;
+      cursor: pointer; border-bottom: 1px solid #f3f4f6;
+      border-right: 1px solid #f3f4f6;
+      transition: background 0.15s;
+      flex-direction: column; gap: 2px;
+      user-select: none;
+    }
+    .cal-day:nth-child(7n) { border-right: none; }
+    .cal-day:hover { background: var(--blue-light); }
+    .cal-day.vazio { cursor: default; }
+    .cal-day.vazio:hover { background: none; }
+    .cal-day.hoje { font-weight: 700; color: var(--blue); }
+    .cal-day.hoje .cal-day-num::after {
+      content: '';
+      display: block; width: 4px; height: 4px;
+      background: var(--blue); border-radius: 50%;
+      margin: 0 auto;
+    }
+    .cal-day.selecionado { background: var(--blue) !important; color: #fff !important; border-radius: 0; }
+    .cal-day.selecionado .cal-day-num::after { background: rgba(255,255,255,0.7); }
+    .cal-day.tem-agenda .cal-dots {
+      display: flex; gap: 2px; justify-content: center;
+    }
+    .cal-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--blue-mid);
+      flex-shrink: 0;
+    }
+    .cal-day.selecionado .cal-dot { background: rgba(255,255,255,0.8); }
+    .cal-dots { min-height: 7px; display: flex; gap: 2px; justify-content: center; }
+
+    /* ── Legenda / botão novo ── */
+    .cal-footer {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .btn-novo {
+      background: var(--blue); color: #fff; border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px 18px; font-family: inherit; font-size: 14px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; gap: 7px;
+      transition: background 0.18s;
+    }
+    .btn-novo:hover { background: #0e3f7a; }
+    .hoje-btn {
+      background: none; border: 1.5px solid var(--border);
+      color: var(--muted); border-radius: var(--radius-sm);
+      padding: 8px 14px; font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .hoje-btn:hover { background: var(--blue-light); color: var(--blue); border-color: var(--blue); }
+
+    /* ── Painel direito ── */
+    .painel-direito { display: flex; flex-direction: column; gap: 16px; }
+
+    /* ── Card de agendamentos do dia ── */
+    .dia-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .dia-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .dia-titulo { font-size: 16px; font-weight: 700; color: var(--text); }
+    .dia-subtitulo { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .badge-count {
+      background: var(--blue-light); color: var(--blue);
+      border-radius: 20px; padding: 3px 11px;
+      font-size: 12px; font-weight: 700;
+    }
+    .lista-agendamentos { padding: 8px 0; min-height: 80px; }
+    .agend-item {
+      padding: 14px 20px;
+      border-bottom: 1px solid #f3f4f6;
+      display: flex; align-items: flex-start; gap: 14px;
+      transition: background 0.15s;
+    }
+    .agend-item:last-child { border-bottom: none; }
+    .agend-item:hover { background: #fafafa; }
+    .agend-status-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      flex-shrink: 0; margin-top: 6px;
+    }
+    .agend-info { flex: 1; min-width: 0; }
+    .agend-paciente { font-size: 15px; font-weight: 600; color: var(--text); }
+    .agend-meta { font-size: 13px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+    .agend-acoes {
+      display: flex; gap: 6px; flex-shrink: 0;
+    }
+    .btn-icon {
+      background: none; border: none; cursor: pointer;
+      padding: 6px; border-radius: 8px; font-size: 16px;
+      transition: background 0.15s;
+    }
+    .btn-icon:hover { background: var(--blue-light); }
+    .btn-icon.danger:hover { background: var(--red-light); }
+
+    /* Status colors */
+    .status-confirmado { background: var(--green); }
+    .status-pendente   { background: #f59e0b; }
+    .status-cancelado  { background: var(--red); }
+    .status-realizado  { background: var(--muted); }
+
+    /* ── Estado vazio ── */
+    .empty-state {
+      text-align: center; padding: 40px 20px; color: var(--muted);
+    }
+    .empty-icon { font-size: 36px; margin-bottom: 10px; }
+    .empty-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .empty-sub { font-size: 13px; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45); z-index: 500;
+      align-items: center; justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.aberto { display: flex; }
+    .modal {
+      background: var(--surface); border-radius: var(--radius);
+      width: 100%; max-width: 480px;
+      max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-titulo { font-size: 18px; font-weight: 700; }
+    .btn-fechar {
+      background: none; border: none; cursor: pointer;
+      font-size: 22px; color: var(--muted); padding: 4px;
+      border-radius: 6px; transition: background 0.15s;
+    }
+    .btn-fechar:hover { background: #f3f4f6; }
+    .modal-body { padding: 20px 24px; }
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 10px; justify-content: flex-end;
+    }
+    .btn-sec {
+      padding: 11px 20px; background: none;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 15px; font-weight: 600;
+      cursor: pointer; color: var(--muted); transition: background 0.15s;
+    }
+    .btn-sec:hover { background: #f3f4f6; }
+    .btn-salvar {
+      padding: 11px 24px; background: var(--blue); color: #fff;
+      border: none; border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: background 0.18s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-salvar:hover { background: #0e3f7a; }
+    .btn-salvar:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-excluir {
+      padding: 11px 20px; background: var(--red-light); color: var(--red);
+      border: 1.5px solid #fca5a5; border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 15px; font-weight: 600;
+      cursor: pointer; margin-right: auto;
+      transition: background 0.15s;
+    }
+    .btn-excluir:hover { background: #fee2e2; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: #1f2937; color: #fff;
+      padding: 12px 22px; border-radius: 30px;
+      font-size: 14px; font-weight: 600;
+      opacity: 0; transition: all 0.3s; z-index: 600;
+      white-space: nowrap; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.sucesso { background: var(--green); }
+    .toast.erro { background: var(--red); }
+
+    /* ── Autocomplete ── */
+    .autocomplete-wrap { position: relative; }
+    .autocomplete-lista {
+      display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+      background: var(--surface); border: 1.5px solid var(--blue);
+      border-radius: var(--radius-sm); max-height: 200px; overflow-y: auto;
+      z-index: 300; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    .autocomplete-lista.aberta { display: block; }
+    .autocomplete-item {
+      padding: 12px 14px; cursor: pointer; font-size: 15px;
+      border-bottom: 1px solid #f3f4f6; transition: background 0.12s;
+    }
+    .autocomplete-item:last-child { border-bottom: none; }
+    .autocomplete-item:hover { background: var(--blue-light); color: var(--blue); }
+
+    /* ── Loading ── */
+    .spinner-ring {
+      display: inline-block; width: 20px; height: 20px;
+      border: 2.5px solid #e5e7eb; border-top-color: var(--blue);
+      border-radius: 50%; animation: spin 0.75s linear infinite;
+      vertical-align: middle; margin-right: 8px;
+    }
+    .loading-wrap {
+      display: flex; align-items: center; justify-content: center;
+      padding: 32px; color: var(--muted); font-size: 14px;
+    }
+
+    /* ── Responsivo ── */
+    @media (max-width: 759px) {
+      .cal-day { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-icon">📅</div>
+    <div>
+      <div class="topbar-title">Agenda</div>
+      <div class="topbar-sub">Ambulatório de Estomaterapia</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <span class="prof-chip" id="chip-profissional">👤 <span id="chip-coren"></span></span>
+    <a href="historico.html" class="btn-link">🗂️ Prontuários</a>
+    <a href="index.html" class="btn-link">📝 Evoluções</a>
+  </div>
+</div>
+
+<!-- ══ TELA 1 — LOGIN ══ -->
+<div class="tela ativa" id="tela-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-icon">📅</div>
+      <div class="login-title">Acesso à Agenda</div>
+      <div class="login-sub">Informe suas credenciais para continuar</div>
+      <div class="field">
+        <label for="login-coren">COREN</label>
+        <input type="text" id="login-coren" placeholder="Ex: 123456-RN"
+               autocomplete="off" inputmode="text"
+               style="text-transform:uppercase"
+               oninput="this.value=this.value.toUpperCase()"
+               onkeydown="if(event.key==='Enter') entrar()">
+      </div>
+      <div class="field">
+        <label for="login-senha">Senha</label>
+        <input type="password" id="login-senha" placeholder="••••••••"
+               autocomplete="current-password"
+               onkeydown="if(event.key==='Enter') entrar()">
+      </div>
+      <button class="btn-primary" id="btn-entrar" onclick="entrar()">
+        <span id="btn-entrar-txt">Entrar</span>
+        <div class="spinner-sm" id="spinner-login" style="display:none"></div>
+      </button>
+      <div class="login-erro" id="login-erro"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TELA 2 — AGENDA ══ -->
+<div class="tela" id="tela-agenda">
+  <div class="agenda-layout">
+
+    <!-- Coluna esquerda: calendário -->
+    <div>
+      <div class="cal-card">
+        <div class="cal-header">
+          <button class="cal-nav-btn" onclick="navegarMes(-1)">‹</button>
+          <div class="cal-mes" id="cal-mes-titulo">—</div>
+          <button class="cal-nav-btn" onclick="navegarMes(1)">›</button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <div class="cal-footer">
+          <button class="hoje-btn" onclick="irParaHoje()">Hoje</button>
+          <button class="btn-novo" onclick="abrirModalNovo()">＋ Novo agendamento</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coluna direita: lista do dia -->
+    <div class="painel-direito">
+      <div class="dia-card">
+        <div class="dia-header">
+          <div>
+            <div class="dia-titulo" id="dia-titulo">Selecione um dia</div>
+            <div class="dia-subtitulo" id="dia-subtitulo"></div>
+          </div>
+          <span class="badge-count" id="badge-count" style="display:none">0</span>
+        </div>
+        <div class="lista-agendamentos" id="lista-agendamentos">
+          <div class="empty-state">
+            <div class="empty-icon">📆</div>
+            <div class="empty-title">Clique em um dia no calendário</div>
+            <div class="empty-sub">Os agendamentos aparecem aqui</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ MODAL — Novo / Editar agendamento ══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="fecharModalSeFora(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-titulo" id="modal-titulo">Novo Agendamento</div>
+      <button class="btn-fechar" onclick="fecharModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label for="ag-data">Data <span style="color:var(--red)">*</span></label>
+        <input type="date" id="ag-data">
+      </div>
+      <div class="field">
+        <label for="ag-paciente">Paciente <span style="color:var(--red)">*</span></label>
+        <div class="autocomplete-wrap">
+          <input type="text" id="ag-paciente" placeholder="Digite para buscar..."
+                 autocomplete="off"
+                 oninput="filtrarPacientesModal()"
+                 onfocus="filtrarPacientesModal()">
+          <div class="autocomplete-lista" id="ac-lista"></div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="ag-profissional">Profissional Responsável</label>
+        <input type="text" id="ag-profissional" placeholder="Ex: Enf. João Silva" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="ag-procedimento">Tipo de Procedimento</label>
+        <select id="ag-procedimento">
+          <option value="">Selecione...</option>
+          <option>Troca de curativo</option>
+          <option>Avaliação de lesão</option>
+          <option>Desbridamento</option>
+          <option>Consulta de retorno</option>
+          <option>Primeira consulta</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="ag-status">Status</label>
+        <select id="ag-status">
+          <option value="Pendente">Pendente</option>
+          <option value="Confirmado">Confirmado</option>
+          <option value="Realizado">Realizado</option>
+          <option value="Cancelado">Cancelado</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="ag-observacao">Observação / Motivo</label>
+        <textarea id="ag-observacao" placeholder="Anotações adicionais..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-excluir" id="btn-excluir" onclick="confirmarExclusao()" style="display:none">🗑 Excluir</button>
+      <button class="btn-sec" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-salvar" id="btn-salvar" onclick="salvarAgendamento()">
+        <span id="btn-salvar-txt">Salvar</span>
+        <div class="spinner-sm" id="spinner-salvar" style="display:none"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbz4TI1WX_isAaOM37c6C4qwaXUmidOG_yDzfBYsdaJm0Zddiz8i88UlT9iCqSKJmr0j/exec';
+
+  // ── Estado ────────────────────────────────────────────────────
+  let corenLogado   = '';
+  let senhaLogada   = '';
+  let agendamentos  = [];   // todos do mês atual
+  let pacientes     = [];
+  let mesSelecionado = new Date().getMonth();
+  let anoSelecionado = new Date().getFullYear();
+  let diaSelecionado = null;
+  let editandoId    = null; // ID do agendamento em edição (null = novo)
+
+  // ── Backend ───────────────────────────────────────────────────
+  async function chamarBackend(payload) {
+    const res = await fetch(BACKEND_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
+  // ── Telas ──────────────────────────────────────────────────────
+  function mostrarTela(id) {
+    document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+    document.getElementById(id).classList.add('ativa');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Toast ──────────────────────────────────────────────────────
+  let toastTimer;
+  function toast(msg, tipo = '') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show ' + tipo;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+  }
+
+  // ── LOGIN ──────────────────────────────────────────────────────
+  async function entrar() {
+    const coren = document.getElementById('login-coren').value.trim().toUpperCase();
+    const senha = document.getElementById('login-senha').value.trim();
+    const erroEl = document.getElementById('login-erro');
+    erroEl.style.display = 'none';
+
+    if (!coren || !senha) {
+      erroEl.textContent = 'Preencha COREN e senha.';
+      erroEl.style.display = 'block';
+      return;
+    }
+
+    const btn    = document.getElementById('btn-entrar');
+    const txtBtn = document.getElementById('btn-entrar-txt');
+    const sp     = document.getElementById('spinner-login');
+    btn.disabled = true; txtBtn.textContent = 'Verificando...'; sp.style.display = 'inline-block';
+
+    try {
+      const res = await chamarBackend({ action: 'validarChave', coren, chave: senha });
+      if (res.valida) {
+        corenLogado = coren;
+        senhaLogada = senha;
+        document.getElementById('chip-coren').textContent = coren;
+        document.getElementById('chip-profissional').style.display = 'flex';
+        await Promise.all([carregarAgendamentos(), carregarPacientes()]);
+        mostrarTela('tela-agenda');
+        renderizarCalendario();
+      } else {
+        erroEl.textContent = '❌ COREN ou senha inválidos.';
+        erroEl.style.display = 'block';
+      }
+    } catch (err) {
+      erroEl.textContent = '⚠️ Erro de conexão: ' + err.message;
+      erroEl.style.display = 'block';
+    } finally {
+      btn.disabled = false; txtBtn.textContent = 'Entrar'; sp.style.display = 'none';
+    }
+  }
+
+  // ── Carregar agendamentos ──────────────────────────────────────
+  async function carregarAgendamentos() {
+    try {
+      const res = await chamarBackend({ action: 'listarAgendamentos' });
+      agendamentos = Array.isArray(res) ? res : (res.agendamentos || []);
+    } catch (err) {
+      console.error('Erro ao carregar agendamentos:', err);
+      agendamentos = [];
+    }
+  }
+
+  // ── Carregar pacientes ─────────────────────────────────────────
+  async function carregarPacientes() {
+    try {
+      const nomes = await chamarBackend({ action: 'listarPacientes' });
+      pacientes = Array.isArray(nomes) ? nomes : [];
+    } catch (err) {
+      pacientes = [];
+    }
+  }
+
+  // ── Autocomplete de pacientes no modal ────────────────────────
+  function filtrarPacientesModal() {
+    const input = document.getElementById('ag-paciente');
+    const lista = document.getElementById('ac-lista');
+    const termo = input.value.toLowerCase().trim();
+    lista.innerHTML = '';
+    if (termo.length < 1) { lista.classList.remove('aberta'); return; }
+    const filtrados = pacientes.filter(n => n.toLowerCase().includes(termo)).slice(0, 20);
+    if (filtrados.length === 0) { lista.classList.remove('aberta'); return; }
+    filtrados.forEach(nome => {
+      const item = document.createElement('div');
+      item.className = 'autocomplete-item';
+      item.textContent = nome;
+      item.addEventListener('mousedown', () => {
+        input.value = nome;
+        lista.classList.remove('aberta');
+      });
+      lista.appendChild(item);
+    });
+    lista.classList.add('aberta');
+  }
+
+  document.addEventListener('click', e => {
+    if (!document.getElementById('ag-paciente')?.contains(e.target)) {
+      document.getElementById('ac-lista')?.classList.remove('aberta');
+    }
+  });
+
+  // ── Calendário ────────────────────────────────────────────────
+  const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+                 'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const DIAS_SEMANA = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+  function renderizarCalendario() {
+    document.getElementById('cal-mes-titulo').textContent =
+      `${MESES[mesSelecionado]} ${anoSelecionado}`;
+
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+
+    // Cabeçalho dias da semana
+    DIAS_SEMANA.forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'cal-dow';
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+
+    const hoje = new Date();
+    const primeiroDia = new Date(anoSelecionado, mesSelecionado, 1).getDay();
+    const totalDias   = new Date(anoSelecionado, mesSelecionado + 1, 0).getDate();
+
+    // Agendamentos do mês indexados por dia
+    const agendPorDia = {};
+    agendamentos.forEach(ag => {
+      if (!ag.data) return;
+      const [a, m, d] = ag.data.split('-').map(Number);
+      if (a === anoSelecionado && m - 1 === mesSelecionado) {
+        agendPorDia[d] = (agendPorDia[d] || []).concat(ag);
+      }
+    });
+
+    // Células vazias
+    for (let i = 0; i < primeiroDia; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day vazio';
+      grid.appendChild(el);
+    }
+
+    for (let dia = 1; dia <= totalDias; dia++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day';
+
+      const numEl = document.createElement('div');
+      numEl.className = 'cal-day-num';
+      numEl.textContent = dia;
+      el.appendChild(numEl);
+
+      const dotsEl = document.createElement('div');
+      dotsEl.className = 'cal-dots';
+
+      const lista = agendPorDia[dia] || [];
+      if (lista.length > 0) {
+        el.classList.add('tem-agenda');
+        const maxDots = Math.min(lista.length, 3);
+        for (let k = 0; k < maxDots; k++) {
+          const dot = document.createElement('div');
+          dot.className = 'cal-dot';
+          dotsEl.appendChild(dot);
+        }
+      }
+      el.appendChild(dotsEl);
+
+      const isHoje = dia === hoje.getDate() &&
+                     mesSelecionado === hoje.getMonth() &&
+                     anoSelecionado === hoje.getFullYear();
+      if (isHoje) el.classList.add('hoje');
+
+      if (diaSelecionado === dia &&
+          mesSelecionado === (diaSelecionado !== null ? mesSelecionado : -1)) {
+        el.classList.add('selecionado');
+      }
+
+      el.addEventListener('click', () => selecionarDia(dia));
+      grid.appendChild(el);
+    }
+  }
+
+  function selecionarDia(dia) {
+    diaSelecionado = dia;
+    renderizarCalendario();
+
+    // Highlight
+    document.querySelectorAll('.cal-day').forEach(el => el.classList.remove('selecionado'));
+    const todos = document.querySelectorAll('.cal-day:not(.vazio)');
+    const primeiroDia = new Date(anoSelecionado, mesSelecionado, 1).getDay();
+    const idx = primeiroDia + dia - 1;
+    if (todos[dia - 1]) todos[dia - 1].classList.add('selecionado');
+
+    const data = new Date(anoSelecionado, mesSelecionado, dia);
+    const opts = { weekday: 'long', day: 'numeric', month: 'long' };
+    document.getElementById('dia-titulo').textContent =
+      data.toLocaleDateString('pt-BR', opts).replace(/^\w/, c => c.toUpperCase());
+
+    const agDia = agendamentos.filter(ag => {
+      if (!ag.data) return false;
+      const [a, m, d] = ag.data.split('-').map(Number);
+      return a === anoSelecionado && m - 1 === mesSelecionado && d === dia;
+    });
+
+    const badge = document.getElementById('badge-count');
+    if (agDia.length > 0) {
+      badge.textContent = agDia.length;
+      badge.style.display = 'inline-block';
+      document.getElementById('dia-subtitulo').textContent =
+        `${agDia.length} agendamento${agDia.length > 1 ? 's' : ''}`;
+    } else {
+      badge.style.display = 'none';
+      document.getElementById('dia-subtitulo').textContent = 'Nenhum agendamento';
+    }
+
+    renderizarLista(agDia, dia);
+  }
+
+  function renderizarLista(lista, dia) {
+    const container = document.getElementById('lista-agendamentos');
+    container.innerHTML = '';
+
+    if (lista.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <div class="empty-title">Nenhum agendamento neste dia</div>
+          <div class="empty-sub">Clique em "＋ Novo agendamento" para adicionar</div>
+        </div>`;
+      return;
+    }
+
+    lista.forEach(ag => {
+      const item = document.createElement('div');
+      item.className = 'agend-item';
+
+      const statusClass = {
+        'Confirmado': 'status-confirmado',
+        'Pendente':   'status-pendente',
+        'Cancelado':  'status-cancelado',
+        'Realizado':  'status-realizado',
+      }[ag.status] || 'status-pendente';
+
+      const dot = document.createElement('div');
+      dot.className = `agend-status-dot ${statusClass}`;
+
+      const info = document.createElement('div');
+      info.className = 'agend-info';
+
+      const metas = [];
+      if (ag.profissional) metas.push(`👤 ${ag.profissional}`);
+      if (ag.procedimento) metas.push(`🩹 ${ag.procedimento}`);
+      if (ag.status)       metas.push(`● ${ag.status}`);
+      if (ag.observacao)   metas.push(`📝 ${ag.observacao}`);
+
+      info.innerHTML = `
+        <div class="agend-paciente">${ag.paciente || '—'}</div>
+        <div class="agend-meta">${metas.join(' &nbsp;·&nbsp; ')}</div>`;
+
+      const acoes = document.createElement('div');
+      acoes.className = 'agend-acoes';
+
+      const btnEdit = document.createElement('button');
+      btnEdit.className = 'btn-icon';
+      btnEdit.title = 'Editar';
+      btnEdit.textContent = '✏️';
+      btnEdit.onclick = () => abrirModalEditar(ag);
+
+      acoes.appendChild(btnEdit);
+      item.appendChild(dot);
+      item.appendChild(info);
+      item.appendChild(acoes);
+      container.appendChild(item);
+    });
+  }
+
+  function navegarMes(delta) {
+    mesSelecionado += delta;
+    if (mesSelecionado < 0)  { mesSelecionado = 11; anoSelecionado--; }
+    if (mesSelecionado > 11) { mesSelecionado = 0;  anoSelecionado++; }
+    diaSelecionado = null;
+    document.getElementById('dia-titulo').textContent = 'Selecione um dia';
+    document.getElementById('dia-subtitulo').textContent = '';
+    document.getElementById('badge-count').style.display = 'none';
+    document.getElementById('lista-agendamentos').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📆</div>
+        <div class="empty-title">Clique em um dia no calendário</div>
+      </div>`;
+    renderizarCalendario();
+  }
+
+  function irParaHoje() {
+    const hoje = new Date();
+    mesSelecionado = hoje.getMonth();
+    anoSelecionado = hoje.getFullYear();
+    renderizarCalendario();
+    selecionarDia(hoje.getDate());
+  }
+
+  // ── Modal ─────────────────────────────────────────────────────
+  function abrirModalNovo() {
+    editandoId = null;
+    document.getElementById('modal-titulo').textContent = 'Novo Agendamento';
+    document.getElementById('btn-excluir').style.display = 'none';
+
+    // Preencher data com o dia selecionado (se houver)
+    if (diaSelecionado) {
+      const d = String(diaSelecionado).padStart(2, '0');
+      const m = String(mesSelecionado + 1).padStart(2, '0');
+      document.getElementById('ag-data').value = `${anoSelecionado}-${m}-${d}`;
+    } else {
+      document.getElementById('ag-data').value = '';
+    }
+
+    document.getElementById('ag-paciente').value = '';
+    document.getElementById('ag-profissional').value = corenLogado;
+    document.getElementById('ag-procedimento').value = '';
+    document.getElementById('ag-status').value = 'Pendente';
+    document.getElementById('ag-observacao').value = '';
+
+    document.getElementById('modal-overlay').classList.add('aberto');
+  }
+
+  function abrirModalEditar(ag) {
+    editandoId = ag.id;
+    document.getElementById('modal-titulo').textContent = 'Editar Agendamento';
+    document.getElementById('btn-excluir').style.display = 'block';
+
+    document.getElementById('ag-data').value          = ag.data || '';
+    document.getElementById('ag-paciente').value      = ag.paciente || '';
+    document.getElementById('ag-profissional').value  = ag.profissional || '';
+    document.getElementById('ag-procedimento').value  = ag.procedimento || '';
+    document.getElementById('ag-status').value        = ag.status || 'Pendente';
+    document.getElementById('ag-observacao').value    = ag.observacao || '';
+
+    document.getElementById('modal-overlay').classList.add('aberto');
+  }
+
+  function fecharModal() {
+    document.getElementById('modal-overlay').classList.remove('aberto');
+    document.getElementById('ac-lista').classList.remove('aberta');
+  }
+
+  function fecharModalSeFora(e) {
+    if (e.target === document.getElementById('modal-overlay')) fecharModal();
+  }
+
+  async function salvarAgendamento() {
+    const data        = document.getElementById('ag-data').value;
+    const paciente    = document.getElementById('ag-paciente').value.trim();
+    const profissional= document.getElementById('ag-profissional').value.trim();
+    const procedimento= document.getElementById('ag-procedimento').value;
+    const status      = document.getElementById('ag-status').value;
+    const observacao  = document.getElementById('ag-observacao').value.trim();
+
+    if (!data)     { toast('Informe a data', 'erro'); return; }
+    if (!paciente) { toast('Informe o paciente', 'erro'); return; }
+
+    const btn = document.getElementById('btn-salvar');
+    const txt = document.getElementById('btn-salvar-txt');
+    const sp  = document.getElementById('spinner-salvar');
+    btn.disabled = true; txt.textContent = 'Salvando...'; sp.style.display = 'inline-block';
+
+    const payload = {
+      action: editandoId !== null ? 'editarAgendamento' : 'criarAgendamento',
+      agendamento: { id: editandoId, data, paciente, profissional, procedimento, status, observacao }
+    };
+
+    try {
+      const res = await chamarBackend(payload);
+      if (res.sucesso) {
+        fecharModal();
+        await carregarAgendamentos();
+        renderizarCalendario();
+        if (diaSelecionado) selecionarDia(diaSelecionado);
+        toast(editandoId !== null ? '✅ Agendamento atualizado!' : '✅ Agendamento criado!', 'sucesso');
+      } else {
+        toast('❌ ' + (res.mensagem || 'Erro ao salvar'), 'erro');
+      }
+    } catch (err) {
+      toast('⚠️ Erro de conexão: ' + err.message, 'erro');
+    } finally {
+      btn.disabled = false; txt.textContent = 'Salvar'; sp.style.display = 'none';
+    }
+  }
+
+  async function confirmarExclusao() {
+    if (!confirm('Confirmar exclusão deste agendamento?')) return;
+    const btn = document.getElementById('btn-salvar');
+    btn.disabled = true;
+
+    try {
+      const res = await chamarBackend({ action: 'excluirAgendamento', id: editandoId });
+      if (res.sucesso) {
+        fecharModal();
+        await carregarAgendamentos();
+        renderizarCalendario();
+        if (diaSelecionado) selecionarDia(diaSelecionado);
+        toast('🗑 Agendamento excluído', '');
+      } else {
+        toast('❌ ' + (res.mensagem || 'Erro ao excluir'), 'erro');
+      }
+    } catch (err) {
+      toast('⚠️ Erro: ' + err.message, 'erro');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>
