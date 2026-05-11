@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Histórico de Evoluções</title>
+  <title>Prontuários — Estomaterapia</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
@@ -17,6 +17,10 @@
       --red-light: #fef2f2;
       --amber: #92400e;
       --amber-light: #fffbeb;
+      --purple: #6d28d9;
+      --purple-light: #ede9fe;
+      --teal: #0f766e;
+      --teal-light: #ccfbf1;
       --border: #d1d5db;
       --bg: #f4f6fa;
       --surface: #ffffff;
@@ -33,876 +37,1081 @@
       font-family: 'DM Sans', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
-      font-size: 17px;
+      font-size: 16px;
       line-height: 1.6;
-      padding: 0;
     }
 
-    /* ── Topo ── */
+    /* ── Topbar ── */
     .topbar {
       background: var(--blue);
-      padding: 18px 20px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 12px;
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 100;
     }
-
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
     .topbar-icon {
-      width: 44px;
-      height: 44px;
+      width: 42px; height: 42px;
       background: rgba(255,255,255,0.15);
       border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
     }
-
-    .topbar-title { color: #fff; font-size: 19px; font-weight: 600; line-height: 1.2; }
-    .topbar-sub   { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 2px; }
-
-    .topbar-actions {
-      display: flex;
-      gap: 10px;
-    }
-
+    .topbar-title { color: #fff; font-size: 18px; font-weight: 600; line-height: 1.2; }
+    .topbar-sub   { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 1px; }
     .btn-link {
-      padding: 10px 16px;
-      background: rgba(255,255,255,0.2);
-      color: #fff;
-      border: none;
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.18);
+      color: #fff; border: none;
       border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.18s;
-      min-height: 40px;
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: background 0.18s; min-height: 38px;
     }
-    .btn-link:hover { background: rgba(255,255,255,0.3); }
-    .btn-link:active { background: rgba(255,255,255,0.4); }
+    .btn-link:hover { background: rgba(255,255,255,0.28); }
+
+    /* ── Telas ── */
+    .tela { display: none; }
+    .tela.ativa { display: block; }
 
     /* ── Container ── */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+    .container { max-width: 860px; margin: 0 auto; padding: 20px 16px; }
 
-    /* ── Filtros ── */
-    .filters-section {
+    /* ── Tela de login ── */
+    .login-wrap {
+      min-height: calc(100vh - 74px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 16px;
+    }
+    .login-card {
       background: var(--surface);
       border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 20px;
       border: 1px solid var(--border);
+      padding: 32px 28px;
+      width: 100%; max-width: 400px;
+      box-shadow: 0 4px 24px rgba(21,87,160,0.08);
+    }
+    .login-icon {
+      width: 56px; height: 56px;
+      background: var(--blue-light);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin: 0 auto 20px;
+    }
+    .login-title {
+      text-align: center;
+      font-size: 20px; font-weight: 700;
+      color: var(--blue); margin-bottom: 6px;
+    }
+    .login-sub {
+      text-align: center; font-size: 14px;
+      color: var(--muted); margin-bottom: 28px;
+    }
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block; font-size: 14px;
+      font-weight: 600; color: #374151; margin-bottom: 7px;
+    }
+    .field input {
+      width: 100%; padding: 13px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 16px;
+      background: #fafafa; transition: border-color 0.18s, background 0.18s;
+      -webkit-appearance: none;
+    }
+    .field input:focus {
+      outline: none; border-color: var(--blue);
+      background: #fff; box-shadow: 0 0 0 3px rgba(21,87,160,0.1);
+    }
+    .btn-primary {
+      width: 100%; padding: 14px;
+      background: var(--blue); color: #fff;
+      border: none; border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: background 0.18s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 50px;
+    }
+    .btn-primary:hover { background: #0e3f7a; }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* ── Tela de busca ── */
+    .search-hero {
+      background: var(--blue);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .search-hero h2 { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .search-hero p { color: rgba(255,255,255,0.75); font-size: 14px; margin-bottom: 20px; }
+    .search-box {
+      max-width: 520px; margin: 0 auto;
+      position: relative;
+    }
+    .search-input {
+      width: 100%; padding: 14px 52px 14px 18px;
+      border: none; border-radius: var(--radius);
+      font-family: inherit; font-size: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      -webkit-appearance: none;
+    }
+    .search-input:focus { outline: none; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+    .search-icon {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      font-size: 20px; pointer-events: none; color: var(--muted);
     }
 
-    .filters-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    /* ── Autocomplete lista ── */
+    .autocomplete-wrap { position: relative; }
+    .autocomplete-lista {
+      display: none;
+      position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      max-height: 280px; overflow-y: auto;
+      z-index: 200;
+    }
+    .autocomplete-lista.aberta { display: block; }
+    .autocomplete-item {
+      padding: 13px 16px; cursor: pointer;
+      font-size: 15px; border-bottom: 1px solid #f3f4f6;
+      transition: background 0.12s;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .autocomplete-item:last-child { border-bottom: none; }
+    .autocomplete-item:hover, .autocomplete-item.focus { background: var(--blue-light); color: var(--blue); }
+    .autocomplete-item::before { content: '👤'; font-size: 14px; }
+    .autocomplete-vazio {
+      padding: 16px; color: var(--muted);
+      font-size: 14px; text-align: center;
     }
 
-    .filters-grid {
+    /* ── Prontuário ── */
+    .prontuario-header {
+      background: var(--blue);
+      padding: 20px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .prontuario-avatar {
+      width: 52px; height: 52px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+      font-weight: 700; color: #fff;
+    }
+    .prontuario-nome { color: #fff; font-size: 19px; font-weight: 700; line-height: 1.2; }
+    .prontuario-meta { color: rgba(255,255,255,0.75); font-size: 13px; margin-top: 3px; }
+    .btn-voltar-busca {
+      margin-left: auto; flex-shrink: 0;
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.18); color: #fff;
+      border: none; border-radius: 8px;
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 5px;
+      transition: background 0.15s;
+    }
+    .btn-voltar-busca:hover { background: rgba(255,255,255,0.28); }
+
+    /* ── Seção de abas ── */
+    .abas-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex; overflow-x: auto;
+      scrollbar-width: none; padding: 0 8px;
+    }
+    .abas-nav::-webkit-scrollbar { display: none; }
+    .aba-btn {
+      flex-shrink: 0; padding: 14px 16px;
+      font-size: 13px; font-weight: 600;
+      color: var(--muted); background: none; border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer; white-space: nowrap;
+      transition: color 0.18s, border-color 0.18s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .aba-btn.ativa { color: var(--blue); border-bottom-color: var(--blue); }
+
+    .aba-painel { display: none; }
+    .aba-painel.ativo { display: block; }
+
+    /* ── Cards de info ── */
+    .info-section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin-bottom: 16px; overflow: hidden;
+    }
+    .info-section-header {
+      padding: 14px 18px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .info-section-icon {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .info-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 0;
     }
-    @media (min-width: 640px) {
-      .filters-grid { grid-template-columns: 1fr 1fr; }
+    @media (min-width: 540px) {
+      .info-grid { grid-template-columns: 1fr 1fr; }
     }
-    @media (min-width: 900px) {
-      .filters-grid { grid-template-columns: 2fr 1fr 1fr; }
+    @media (min-width: 760px) {
+      .info-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
     }
+    .info-item {
+      padding: 14px 18px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .info-item:last-child { border-bottom: none; }
+    .info-label {
+      font-size: 11px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 4px;
+    }
+    .info-value {
+      font-size: 15px; font-weight: 500; color: var(--text);
+      line-height: 1.5;
+    }
+    .info-value.vazio { color: var(--muted); font-style: italic; font-weight: 400; }
 
-    .filter-field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .filter-field label {
-      font-size: 13px;
-      font-weight: 600;
-      color: #374151;
-    }
-
-    .filter-field input,
-    .filter-field select {
-      padding: 10px 12px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 15px;
-      background: #fafafa;
-      transition: border-color 0.18s;
-    }
-    .filter-field input:focus,
-    .filter-field select:focus {
-      outline: none;
-      border-color: var(--blue);
-      background: #fff;
-    }
-
-    .filter-buttons {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .btn-filter {
-      flex: 1;
-      padding: 11px 16px;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.18s;
-      min-height: 44px;
-    }
-    .btn-filter:active { background: #0e3f7a; }
-
-    .btn-limpar {
-      flex: 1;
-      padding: 11px 16px;
-      background: var(--blue-light);
-      color: var(--blue);
-      border: 1.5px solid var(--blue-mid);
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.18s;
-      min-height: 44px;
-    }
-    .btn-limpar:active { background: #d0e4f8; }
-
-    /* ── Resultados ── */
-    .results-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* ── Banner evolução inicial ── */
+    .evolucao-inicial-banner {
+      background: linear-gradient(135deg, #1a3a6b 0%, #1557a0 100%);
+      border-radius: var(--radius);
+      padding: 20px;
       margin-bottom: 16px;
+      position: relative; overflow: hidden;
+    }
+    .evolucao-inicial-banner::before {
+      content: '📋';
+      position: absolute; right: 16px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 48px; opacity: 0.15;
+    }
+    .evolucao-inicial-label {
+      font-size: 11px; font-weight: 700;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .evolucao-inicial-label::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%; background: #4ade80;
+      display: inline-block;
+    }
+    .evolucao-inicial-texto {
+      color: #fff; font-size: 15px;
+      line-height: 1.65; white-space: pre-line;
     }
 
-    .results-count {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--muted);
+    /* ── Badges ── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
     }
+    .badge-blue { background: var(--blue-light); color: var(--blue); }
+    .badge-green { background: var(--green-light); color: var(--green); }
+    .badge-amber { background: var(--amber-light); color: var(--amber); }
+    .badge-purple { background: var(--purple-light); color: var(--purple); }
 
-    .view-toggle {
-      display: flex;
-      gap: 6px;
+    /* ── Estatísticas rápidas ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px; margin-bottom: 16px;
     }
-
-    .view-btn {
-      padding: 8px 12px;
-      border: 1.5px solid var(--border);
+    .stat-card {
       background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      color: var(--muted);
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.18s;
+      padding: 14px 12px; text-align: center;
     }
-    .view-btn.active {
-      background: var(--blue);
-      color: #fff;
-      border-color: var(--blue);
-    }
+    .stat-num { font-size: 24px; font-weight: 700; color: var(--blue); line-height: 1; }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
-    /* ── Timeline ── */
-    .timeline {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .timeline-item {
+    /* ── Timeline evoluções ── */
+    .timeline { display: flex; flex-direction: column; gap: 12px; }
+    .ev-card {
       background: var(--surface);
       border-radius: var(--radius-sm);
       border: 1px solid var(--border);
       overflow: hidden;
       transition: box-shadow 0.18s;
     }
-    .timeline-item:hover {
-      box-shadow: 0 4px 12px rgba(21, 87, 160, 0.08);
-    }
+    .ev-card:hover { box-shadow: 0 4px 14px rgba(21,87,160,0.08); }
 
-    .timeline-header {
-      padding: 16px;
+    .ev-card-header {
+      padding: 13px 16px;
       background: var(--blue-light);
       border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .ev-data { font-weight: 700; color: var(--blue); font-size: 15px; }
+    .ev-hora { font-size: 13px; color: var(--muted); margin-top: 1px; }
+    .ev-status {
+      padding: 4px 10px;
+      background: var(--green-light); color: var(--green);
+      border-radius: 20px; font-size: 12px; font-weight: 600;
+      flex-shrink: 0;
     }
 
-    .timeline-meta {
-      flex: 1;
+    .ev-card-body { padding: 16px; }
+    .ev-prof-row {
+      display: flex; gap: 16px; margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .ev-prof-field { flex: 1; min-width: 120px; }
+    .ev-label {
+      font-size: 11px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 4px;
+    }
+    .ev-value { font-size: 14px; font-weight: 500; }
+
+    .ev-texto {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px;
+      font-size: 14px; line-height: 1.7;
+      white-space: pre-line; color: var(--text);
     }
 
-    .timeline-date {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--blue);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 4px;
-    }
-
-    .timeline-paciente {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .timeline-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      background: var(--green-light);
-      color: var(--green);
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .timeline-body {
-      padding: 16px;
-    }
-
-    .timeline-row {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    @media (min-width: 640px) {
-      .timeline-row { grid-template-columns: 1fr 1fr; }
-    }
-    .timeline-row:last-child { margin-bottom: 0; }
-
-    .timeline-field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .timeline-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .timeline-value {
-      font-size: 14px;
-      color: var(--text);
-      line-height: 1.5;
-      word-break: break-word;
-    }
-
-    .timeline-footer {
+    .ev-card-footer {
       padding: 12px 16px;
-      background: #f9fafb;
       border-top: 1px solid var(--border);
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
+      display: flex; gap: 8px; align-items: center;
     }
-
-    .btn-view-pdf {
-      padding: 10px 16px;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.18s;
-    }
-    .btn-view-pdf:hover { background: #0e3f7a; }
-
-    .btn-view-pdf:disabled {
-      background: var(--muted);
-      cursor: not-allowed;
-    }
-
-    /* ── Atalhos (Primeira/Última) ── */
-    .shortcuts {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .shortcut-card {
-      background: var(--surface);
-      border-radius: var(--radius-sm);
-      border: 1.5px solid var(--border);
-      padding: 16px;
-      text-align: center;
-      transition: all 0.18s;
-      cursor: pointer;
-    }
-    .shortcut-card:hover {
-      box-shadow: 0 4px 12px rgba(21, 87, 160, 0.08);
-      border-color: var(--blue);
-    }
-
-    .shortcut-icon {
-      font-size: 28px;
-      margin-bottom: 8px;
-    }
-
-    .shortcut-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-    }
-
-    .shortcut-date {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 10px;
-    }
-
-    .btn-shortcut {
-      width: 100%;
-      padding: 10px;
-      background: var(--blue-light);
-      color: var(--blue);
+    .btn-pdf {
+      padding: 8px 14px;
+      background: var(--blue-light); color: var(--blue);
       border: 1.5px solid var(--blue-mid);
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.18s;
+      border-radius: 8px; font-family: inherit;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: background 0.15s;
     }
-    .btn-shortcut:active { background: #d0e4f8; }
-    .btn-shortcut:disabled {
-      background: #f3f4f6;
-      color: var(--muted);
-      border-color: var(--border);
-      cursor: not-allowed;
+    .btn-pdf:hover { background: #d0e4f8; }
+    .btn-pdf:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── Primeira evolução destaque na aba ── */
+    .ev-card.primeira-evolucao {
+      border-color: #1557a0;
+      box-shadow: 0 0 0 2px rgba(21,87,160,0.15);
+    }
+    .ev-card.primeira-evolucao .ev-card-header {
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    }
+    .tag-primeira {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px;
+      background: var(--blue); color: #fff;
+      border-radius: 20px; font-size: 11px; font-weight: 700;
     }
 
-    /* ── Estado vazio ── */
+    /* ── Empty state ── */
     .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-    }
-
-    .empty-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-
-    .empty-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .empty-text {
-      font-size: 15px;
+      text-align: center; padding: 48px 20px;
       color: var(--muted);
-      margin-bottom: 24px;
     }
-
-    .btn-novo {
-      padding: 12px 24px;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .empty-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .empty-sub { font-size: 14px; }
 
     /* ── Loading ── */
-    .loading {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--muted);
+    .loading-wrap {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 56px 20px; gap: 14px;
     }
-
     .spinner {
-      display: inline-block;
-      width: 32px;
-      height: 32px;
-      border: 3px solid var(--border);
+      width: 36px; height: 36px;
+      border: 3px solid var(--blue-light);
       border-top-color: var(--blue);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
-      margin-bottom: 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-txt { color: var(--muted); font-size: 14px; }
+
+    /* ── Feedback toast ── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1f2937; color: #fff;
+      padding: 12px 20px; border-radius: 10px;
+      font-size: 14px; font-weight: 500;
+      z-index: 999; transition: transform 0.3s ease;
+      max-width: 90vw; text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.erro { background: var(--red); }
+    .toast.ok { background: var(--green); }
+
+    /* ── Separador de data ── */
+    .data-sep {
+      text-align: center; position: relative;
+      margin: 8px 0 4px;
+    }
+    .data-sep::before {
+      content: ''; position: absolute;
+      left: 0; right: 0; top: 50%;
+      height: 1px; background: var(--border);
+    }
+    .data-sep span {
+      background: var(--bg); padding: 0 12px;
+      font-size: 12px; color: var(--muted);
+      font-weight: 600; position: relative;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    /* ── Profissional badge no topbar ── */
+    .prof-chip {
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      padding: 5px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+      display: flex; align-items: center; gap: 5px;
+      flex-shrink: 0;
     }
 
-    /* ── Feedback ── */
-    .feedback {
-      padding: 16px;
-      border-radius: var(--radius-sm);
-      margin-bottom: 16px;
-      display: none;
-    }
-    .feedback.show { display: block; }
-
-    .feedback.success {
-      background: var(--green-light);
-      color: var(--green);
-      border: 1px solid var(--green);
-    }
-
-    .feedback.error {
-      background: var(--red-light);
-      color: var(--red);
-      border: 1px solid var(--red);
-    }
-
-    .feedback.info {
-      background: var(--blue-light);
-      color: var(--blue);
-      border: 1px solid var(--blue);
-    }
-
-    @media (max-width: 640px) {
-      .container { padding: 14px 10px; }
-      .filters-grid { grid-template-columns: 1fr; }
-      .topbar { flex-direction: column; text-align: center; }
-      .topbar-actions { width: 100%; }
+    /* ── Responsividade ── */
+    @media (max-width: 420px) {
+      .stats-row { grid-template-columns: repeat(3, 1fr); }
+      .stat-num { font-size: 20px; }
+      .prontuario-header { flex-wrap: wrap; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Topo -->
-  <div class="topbar">
-    <div class="topbar-left">
-      <div class="topbar-icon">📋</div>
-      <div>
-        <div class="topbar-title">Histórico de Evoluções</div>
-        <div class="topbar-sub">Consulte todas as evoluções de enfermagem</div>
-      </div>
+<!-- ── Topbar ── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-icon">🗂️</div>
+    <div>
+      <div class="topbar-title">Prontuários</div>
+      <div class="topbar-sub" id="topbar-sub">Ambulatório de Estomaterapia</div>
     </div>
-    <div class="topbar-actions">
-      <a href="index.html" class="btn-link">➕ Nova Evolução</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <span class="prof-chip" id="chip-profissional" style="display:none">👤 <span id="chip-nome"></span></span>
+    <a href="index.html" class="btn-link">📝 Evoluções</a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TELA 1 — LOGIN
+══════════════════════════════════════════ -->
+<div class="tela ativa" id="tela-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-icon">🔐</div>
+      <div class="login-title">Acesso aos Prontuários</div>
+      <div class="login-sub">Informe suas credenciais de profissional</div>
+
+      <div class="field">
+        <label for="login-coren">COREN</label>
+        <input type="text" id="login-coren" placeholder="Ex: 123456" autocomplete="off"
+               inputmode="text" style="text-transform:uppercase"
+               oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="field">
+        <label for="login-senha">Senha</label>
+        <input type="password" id="login-senha" placeholder="••••••••" autocomplete="current-password"
+               onkeydown="if(event.key==='Enter') entrar()">
+      </div>
+
+      <button class="btn-primary" id="btn-entrar" onclick="entrar()">
+        <span id="btn-entrar-txt">Entrar</span>
+        <div class="spinner" id="spinner-login" style="display:none;width:20px;height:20px;border-width:2px;"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TELA 2 — BUSCA DE PACIENTE
+══════════════════════════════════════════ -->
+<div class="tela" id="tela-busca">
+  <div class="search-hero">
+    <h2>Buscar Paciente</h2>
+    <p>Digite o nome para pesquisar no cadastro</p>
+    <div class="search-box autocomplete-wrap">
+      <input class="search-input" type="text" id="busca-input"
+             placeholder="Nome do paciente..."
+             autocomplete="off"
+             oninput="filtrarBusca()"
+             onfocus="filtrarBusca()">
+      <span class="search-icon">🔍</span>
+      <div class="autocomplete-lista" id="busca-lista"></div>
     </div>
   </div>
 
-  <!-- Container Principal -->
+  <div class="container">
+    <div id="busca-loading" style="display:none">
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <div class="loading-txt">Carregando cadastros...</div>
+      </div>
+    </div>
+    <div id="busca-instrucao" class="empty-state">
+      <div class="empty-icon">👆</div>
+      <div class="empty-title">Digite o nome acima</div>
+      <div class="empty-sub">Os pacientes cadastrados aparecerão como sugestão</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TELA 3 — PRONTUÁRIO DO PACIENTE
+══════════════════════════════════════════ -->
+<div class="tela" id="tela-prontuario">
+
+  <!-- Cabeçalho do paciente -->
+  <div class="prontuario-header" id="pront-header">
+    <div class="prontuario-avatar" id="pront-avatar">?</div>
+    <div style="flex:1;min-width:0">
+      <div class="prontuario-nome" id="pront-nome">—</div>
+      <div class="prontuario-meta" id="pront-meta">—</div>
+    </div>
+    <button class="btn-voltar-busca" onclick="voltarBusca()">← Voltar</button>
+  </div>
+
+  <!-- Abas -->
+  <div class="abas-nav">
+    <button class="aba-btn ativa" data-aba="ficha" onclick="mudarAba('ficha')">
+      📋 Ficha Clínica
+    </button>
+    <button class="aba-btn" data-aba="evolucoes" onclick="mudarAba('evolucoes')" id="aba-ev-btn">
+      📅 Evoluções <span id="badge-ev" style="display:none" class="badge badge-blue">0</span>
+    </button>
+  </div>
+
   <div class="container">
 
-    <!-- Feedback -->
-    <div id="feedback" class="feedback"></div>
+    <!-- Painel: Ficha Clínica -->
+    <div class="aba-painel ativo" id="painel-ficha">
+      <div id="ficha-loading" class="loading-wrap" style="display:none">
+        <div class="spinner"></div>
+        <div class="loading-txt">Carregando prontuário...</div>
+      </div>
+      <div id="ficha-conteudo" style="display:none">
 
-    <!-- Filtros -->
-    <div class="filters-section">
-      <div class="filters-title">🔍 Filtros</div>
-      <div class="filters-grid">
-        <div class="filter-field">
-          <label for="filter-paciente">Paciente</label>
-          <input type="text" id="filter-paciente" placeholder="Nome do paciente...">
+        <!-- Estatísticas rápidas -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-num" id="stat-admissao">—</div>
+            <div class="stat-label">Admissão</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-idade">—</div>
+            <div class="stat-label">Idade</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-evolucoes">0</div>
+            <div class="stat-label">Evoluções</div>
+          </div>
         </div>
-        <div class="filter-field">
-          <label for="filter-coren">COREN</label>
-          <input type="text" id="filter-coren" placeholder="Ex: 12345-SP">
+
+        <!-- Identificação -->
+        <div class="info-section">
+          <div class="info-section-header">
+            <div class="info-section-icon" style="background:var(--blue-light)">👤</div>
+            Identificação
+          </div>
+          <div class="info-grid cols3">
+            <div class="info-item">
+              <div class="info-label">Nome Completo</div>
+              <div class="info-value" id="fi-nome">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Nome Social</div>
+              <div class="info-value" id="fi-nomesocial">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Data de Nascimento</div>
+              <div class="info-value" id="fi-nascimento">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Sexo</div>
+              <div class="info-value" id="fi-sexo">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Nome da Mãe</div>
+              <div class="info-value" id="fi-mae">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Data de Admissão</div>
+              <div class="info-value" id="fi-admissao">—</div>
+            </div>
+          </div>
         </div>
-        <div class="filter-field">
-          <label for="filter-data">Data inicial</label>
-          <input type="date" id="filter-data">
+
+        <!-- Contato -->
+        <div class="info-section">
+          <div class="info-section-header">
+            <div class="info-section-icon" style="background:var(--teal-light)">📍</div>
+            Contato & Localização
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Endereço</div>
+              <div class="info-value" id="fi-endereco">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Contato / Telefone</div>
+              <div class="info-value" id="fi-contato">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clínico -->
+        <div class="info-section">
+          <div class="info-section-header">
+            <div class="info-section-icon" style="background:var(--red-light)">🏥</div>
+            Dados Clínicos
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Diagnósticos</div>
+              <div class="info-value" id="fi-diagnosticos">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Comorbidades</div>
+              <div class="info-value" id="fi-comorbidades">—</div>
+            </div>
+            <div class="info-item" style="grid-column:1/-1">
+              <div class="info-label">Histórico de Saúde</div>
+              <div class="info-value" id="fi-historico">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medicamentos & Vícios -->
+        <div class="info-section">
+          <div class="info-section-header">
+            <div class="info-section-icon" style="background:var(--purple-light)">💊</div>
+            Medicamentos & Hábitos
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Medicamentos em Uso</div>
+              <div class="info-value" id="fi-medicamentos">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Vícios / Hábitos</div>
+              <div class="info-value" id="fi-vicios">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evolução Inicial — destaque -->
+        <div id="fi-evolucao-inicial-wrap">
+          <div class="evolucao-inicial-banner">
+            <div class="evolucao-inicial-label">Evolução Geral Inicial — Admissão</div>
+            <div class="evolucao-inicial-texto" id="fi-evolucao-inicial">—</div>
+          </div>
+        </div>
+
+      </div><!-- /ficha-conteudo -->
+    </div><!-- /painel-ficha -->
+
+    <!-- Painel: Evoluções -->
+    <div class="aba-painel" id="painel-evolucoes">
+      <div id="ev-loading" class="loading-wrap" style="display:none">
+        <div class="spinner"></div>
+        <div class="loading-txt">Carregando evoluções...</div>
+      </div>
+      <div id="ev-conteudo">
+        <div class="timeline" id="timeline"></div>
+        <div class="empty-state" id="ev-empty" style="display:none">
+          <div class="empty-icon">📭</div>
+          <div class="empty-title">Nenhuma evolução registrada</div>
+          <div class="empty-sub">As evoluções deste paciente aparecerão aqui</div>
         </div>
       </div>
-      <div class="filter-buttons">
-        <button class="btn-filter" onclick="aplicarFiltros()">🔎 Filtrar</button>
-        <button class="btn-limpar" onclick="limparFiltros()">⟲ Limpar</button>
-      </div>
     </div>
 
-    <!-- Atalhos (Primeira/Última) -->
-    <div id="shortcuts-section" style="display: none;">
-      <div class="shortcuts">
-        <div class="shortcut-card" onclick="ir_primeira()">
-          <div class="shortcut-icon">⏮️</div>
-          <div class="shortcut-label">Primeira Evolução</div>
-          <div class="shortcut-date" id="primeira-data">-</div>
-          <button class="btn-shortcut" id="btn-primeira">Ver</button>
-        </div>
-        <div class="shortcut-card" onclick="ir_ultima()">
-          <div class="shortcut-icon">⏭️</div>
-          <div class="shortcut-label">Última Evolução</div>
-          <div class="shortcut-date" id="ultima-data">-</div>
-          <button class="btn-shortcut" id="btn-ultima">Ver</button>
-        </div>
-      </div>
-    </div>
+  </div><!-- /container -->
+</div><!-- /tela-prontuario -->
 
-    <!-- Header de resultados -->
-    <div id="results-header" style="display: none;" class="results-header">
-      <div class="results-count">
-        <span id="total-evolutions">0</span> evolução(ões)
-      </div>
-    </div>
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
-    <!-- Loading -->
-    <div id="loading" class="loading" style="display: none;">
-      <div class="spinner"></div>
-      <p>Carregando evoluções...</p>
-    </div>
+<script>
+  // ── CONFIGURAÇÃO ─────────────────────────────────────────────────────
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbz4TI1WX_isAaOM37c6C4qwaXUmidOG_yDzfBYsdaJm0Zddiz8i88UlT9iCqSKJmr0j/exec';
 
-    <!-- Timeline -->
-    <div id="timeline" class="timeline"></div>
+  // ── Estado ────────────────────────────────────────────────────────────
+  let corenAtual   = '';
+  let senhaAtual   = '';
+  let nomeProf     = '';
+  let pacientes    = [];
+  let prontuarioAtual = null;
 
-    <!-- Estado vazio -->
-    <div id="empty-state" class="empty-state" style="display: none;">
-      <div class="empty-icon">📭</div>
-      <h2 class="empty-title">Nenhuma evolução encontrada</h2>
-      <p class="empty-text">Comece registrando uma nova evolução de enfermagem</p>
-      <a href="index.html" class="btn-novo">➕ Nova evolução</a>
-    </div>
-
-  </div>
-
-  <script>
-    // ── Configuração ──────────────────────────────────────────────────
-    const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbz4TI1WX_isAaOM37c6C4qwaXUmidOG_yDzfBYsdaJm0Zddiz8i88UlT9iCqSKJmr0j/exec';
-
-    // ── Dados ─────────────────────────────────────────────────────────
-    let todasEvolucoes = [];
-    let evolucoesFiltradas = [];
-    let pacienteSelecionado = null;
-
-    // ── Utilitários HTTP ──────────────────────────────────────────────
-    // Tenta POST primeiro; se vier 405 (redirect do GAS), cai para GET com query string
-    async function chamarBackend(payload) {
-      // Tentativa 1: POST normal
-      try {
-        const res = await fetch(BACKEND_URL, {
-          method: 'POST',
-          redirect: 'follow',
-          body: JSON.stringify(payload),
-        });
-        if (res.status === 405) throw new Error('405');
-        if (!res.ok) throw new Error(`HTTP ${res.status} - ${res.statusText}`);
-        const texto = await res.text();
-        try {
-          return JSON.parse(texto);
-        } catch(e) {
-          throw new Error('Resposta inválida do servidor: ' + texto.substring(0, 200));
-        }
-      } catch (err) {
-        // Tentativa 2: GET com action na query string (só para leituras)
-        const acoesGet = ['listarEvolucoes', 'listarPacientes'];
-        if (err.message === '405' && acoesGet.includes(payload.action)) {
-          const url = BACKEND_URL + '?action=' + encodeURIComponent(payload.action);
-          const res2 = await fetch(url, { method: 'GET', redirect: 'follow' });
-          const texto2 = await res2.text();
-          try {
-            return JSON.parse(texto2);
-          } catch(e2) {
-            throw new Error('Resposta inválida (GET): ' + texto2.substring(0, 200));
-          }
-        }
-        mostrarFeedback('error', '⚠️ Erro de conexão: ' + err.message);
-        throw err;
+  // ── Utilitários ───────────────────────────────────────────────────────
+  async function chamarBackend(payload) {
+    try {
+      const res = await fetch(BACKEND_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+      });
+      const txt = await res.text();
+      return JSON.parse(txt);
+    } catch (err) {
+      // Fallback GET para leituras
+      const acoesGet = ['listarPacientes', 'listarEvolucoes'];
+      if (acoesGet.includes(payload.action)) {
+        const url = BACKEND_URL + '?action=' + encodeURIComponent(payload.action);
+        const res2 = await fetch(url, { method: 'GET', redirect: 'follow' });
+        return JSON.parse(await res2.text());
       }
+      throw err;
+    }
+  }
+
+  function mostrarTela(id) {
+    document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+    document.getElementById(id).classList.add('ativa');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  let toastTimer;
+  function toast(msg, tipo = '') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show ' + tipo;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 4000);
+  }
+
+  function preencherOuVazio(id, valor) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (valor && valor.toString().trim()) {
+      el.textContent = valor;
+      el.classList.remove('vazio');
+    } else {
+      el.textContent = 'Não informado';
+      el.classList.add('vazio');
+    }
+  }
+
+  // ── LOGIN ─────────────────────────────────────────────────────────────
+  async function entrar() {
+    const coren = document.getElementById('login-coren').value.trim().toUpperCase();
+    const senha = document.getElementById('login-senha').value.trim();
+
+    if (!coren || !senha) {
+      toast('Preencha COREN e senha', 'erro');
+      return;
     }
 
-    // ── Carregamento inicial ──────────────────────────────────────────
-    async function carregarEvolucoes() {
-      document.getElementById('loading').style.display = 'block';
-      document.getElementById('timeline').innerHTML = '';
-      document.getElementById('empty-state').style.display = 'none';
+    const btn = document.getElementById('btn-entrar');
+    const txtBtn = document.getElementById('btn-entrar-txt');
+    const sp = document.getElementById('spinner-login');
 
-      try {
-        const res = await chamarBackend({ action: 'listarEvolucoes' });
-        if (res.sucesso) {
-          todasEvolucoes = res.evolucoes || [];
-          evolucoesFiltradas = [...todasEvolucoes];
-          renderizarTimeline();
-          
-          // Mostrar atalhos se houver paciente
-          const urlParams = new URLSearchParams(window.location.search);
-          pacienteSelecionado = urlParams.get('paciente');
-          if (pacienteSelecionado) {
-            document.getElementById('filter-paciente').value = pacienteSelecionado;
-            carregarAtalhosPorPaciente(pacienteSelecionado);
-          }
-        } else {
-          mostrarFeedback('error', '❌ Erro: ' + res.mensagem);
-        }
-      } catch (err) {
-        mostrarFeedback('error', '❌ Erro ao carregar evoluções: ' + err.message);
-        console.error('Erro completo:', err);
-      } finally {
-        document.getElementById('loading').style.display = 'none';
+    btn.disabled = true;
+    txtBtn.textContent = 'Verificando...';
+    sp.style.display = 'block';
+
+    try {
+      const res = await chamarBackend({ action: 'validarChave', coren, chave: senha });
+
+      if (res.valida) {
+        corenAtual = coren;
+        senhaAtual = senha;
+
+        // Extrair nome simples do COREN para exibir no chip
+        nomeProf = coren;
+        document.getElementById('chip-nome').textContent = coren;
+        document.getElementById('chip-profissional').style.display = 'flex';
+
+        await carregarListaPacientes();
+        mostrarTela('tela-busca');
+      } else {
+        toast('COREN ou senha inválidos', 'erro');
       }
+    } catch (err) {
+      toast('Erro de conexão: ' + err.message, 'erro');
+    } finally {
+      btn.disabled = false;
+      txtBtn.textContent = 'Entrar';
+      sp.style.display = 'none';
+    }
+  }
+
+  // ── LISTA DE PACIENTES ────────────────────────────────────────────────
+  async function carregarListaPacientes() {
+    document.getElementById('busca-loading').style.display = 'flex';
+    document.getElementById('busca-instrucao').style.display = 'none';
+
+    try {
+      const nomes = await chamarBackend({ action: 'listarPacientes' });
+      pacientes = Array.isArray(nomes) ? nomes : [];
+    } catch (err) {
+      toast('Erro ao carregar pacientes', 'erro');
+      pacientes = [];
+    } finally {
+      document.getElementById('busca-loading').style.display = 'none';
+      document.getElementById('busca-instrucao').style.display = 'block';
+    }
+  }
+
+  // ── BUSCA / AUTOCOMPLETE ──────────────────────────────────────────────
+  function filtrarBusca() {
+    const termo = document.getElementById('busca-input').value.toLowerCase().trim();
+    const lista = document.getElementById('busca-lista');
+
+    if (termo.length < 1) {
+      lista.classList.remove('aberta');
+      return;
     }
 
-    // ── Caregar atalhos por paciente ──────────────────────────────────
-    async function carregarAtalhosPorPaciente(paciente) {
-      if (!paciente) return;
+    const filtrados = pacientes.filter(n => n.toLowerCase().includes(termo));
+    lista.innerHTML = '';
 
-      try {
-        const res1 = await chamarBackend({
-          action: 'obterPrimeiraEvolucao',
-          paciente: paciente
-        });
-        const res2 = await chamarBackend({
-          action: 'obterUltimaEvolucao',
-          paciente: paciente
-        });
-
-        if (res1.sucesso) {
-          document.getElementById('primeira-data').textContent = 
-            res1.evolucao.dataHora.split(' ')[0];
-          document.getElementById('btn-primeira').disabled = false;
-        } else {
-          document.getElementById('btn-primeira').disabled = true;
-        }
-
-        if (res2.sucesso) {
-          document.getElementById('ultima-data').textContent = 
-            res2.evolucao.dataHora.split(' ')[0];
-          document.getElementById('btn-ultima').disabled = false;
-        } else {
-          document.getElementById('btn-ultima').disabled = true;
-        }
-
-        document.getElementById('shortcuts-section').style.display = 'block';
-      } catch (err) {
-        console.error('Erro ao carregar atalhos:', err);
-      }
-    }
-
-    // ── Renderizar timeline ───────────────────────────────────────────
-    function renderizarTimeline() {
-      const timeline = document.getElementById('timeline');
-      const resultsHeader = document.getElementById('results-header');
-      const emptyState = document.getElementById('empty-state');
-      const totalEl = document.getElementById('total-evolutions');
-
-      timeline.innerHTML = '';
-
-      if (evolucoesFiltradas.length === 0) {
-        resultsHeader.style.display = 'none';
-        emptyState.style.display = 'block';
-        return;
-      }
-
-      resultsHeader.style.display = 'flex';
-      emptyState.style.display = 'none';
-      totalEl.textContent = evolucoesFiltradas.length;
-
-      evolucoesFiltradas.forEach(ev => {
+    if (filtrados.length === 0) {
+      lista.innerHTML = '<div class="autocomplete-vazio">Nenhum paciente encontrado</div>';
+    } else {
+      filtrados.slice(0, 30).forEach(nome => {
         const item = document.createElement('div');
-        item.className = 'timeline-item';
-
-        const dataFormatada = new Date(ev.dataHora).toLocaleDateString('pt-BR');
-        const horaFormatada = new Date(ev.dataHora).toLocaleTimeString('pt-BR', { 
-          hour: '2-digit', 
-          minute: '2-digit' 
-        });
-
-        item.innerHTML = `
-          <div class="timeline-header">
-            <div class="timeline-meta">
-              <div class="timeline-date">${dataFormatada} às ${horaFormatada}</div>
-              <div class="timeline-paciente">${ev.paciente}</div>
-            </div>
-            <div class="timeline-badge">✓ ${ev.status}</div>
-          </div>
-
-          <div class="timeline-body">
-            <div class="timeline-row">
-              <div class="timeline-field">
-                <div class="timeline-label">COREN</div>
-                <div class="timeline-value">${ev.coren}</div>
-              </div>
-              <div class="timeline-field">
-                <div class="timeline-label">Profissional</div>
-                <div class="timeline-value">${ev.profissional}</div>
-              </div>
-            </div>
-
-            <div class="timeline-row">
-              <div class="timeline-field">
-                <div class="timeline-label">Evolução</div>
-                <div class="timeline-value" style="white-space: pre-line;">${ev.textoCompleto || '-'}</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-footer">
-            ${ev.linkPdf 
-              ? `<a href="${ev.linkPdf}" target="_blank" rel="noopener" class="btn-view-pdf">📄 Ver PDF</a>`
-              : `<button class="btn-view-pdf" disabled>📄 Sem PDF</button>`
-            }
-          </div>
-        `;
-
-        timeline.appendChild(item);
+        item.className = 'autocomplete-item';
+        // Destaca o trecho que bateu
+        const idx = nome.toLowerCase().indexOf(termo);
+        item.innerHTML =
+          escapeHtml(nome.substring(0, idx)) +
+          '<strong>' + escapeHtml(nome.substring(idx, idx + termo.length)) + '</strong>' +
+          escapeHtml(nome.substring(idx + termo.length));
+        item.addEventListener('mousedown', () => selecionarPaciente(nome));
+        item.addEventListener('touchstart', (e) => { e.preventDefault(); selecionarPaciente(nome); }, { passive: false });
+        lista.appendChild(item);
       });
     }
 
-    // ── Aplicar filtros ───────────────────────────────────────────────
-    function aplicarFiltros() {
-      const paciente = document.getElementById('filter-paciente').value.toLowerCase().trim();
-      const coren = document.getElementById('filter-coren').value.toUpperCase().trim();
-      const data = document.getElementById('filter-data').value;
+    lista.classList.add('aberta');
+  }
 
-      evolucoesFiltradas = todasEvolucoes.filter(ev => {
-        const atendePaciente = !paciente || 
-          ev.paciente.toLowerCase().includes(paciente);
-        
-        const atendeCoren = !coren || 
-          ev.coren.toUpperCase().includes(coren);
-        
-        const atendData = !data || 
-          ev.dataHora.startsWith(data);
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
 
-        return atendePaciente && atendeCoren && atendData;
+  document.addEventListener('click', (e) => {
+    const wrap = document.querySelector('.search-box');
+    if (wrap && !wrap.contains(e.target)) {
+      document.getElementById('busca-lista').classList.remove('aberta');
+    }
+  });
+
+  async function selecionarPaciente(nome) {
+    document.getElementById('busca-input').value = nome;
+    document.getElementById('busca-lista').classList.remove('aberta');
+    await abrirProntuario(nome);
+  }
+
+  // ── PRONTUÁRIO ────────────────────────────────────────────────────────
+  async function abrirProntuario(nome) {
+    mostrarTela('tela-prontuario');
+
+    // Reset UI
+    document.getElementById('pront-nome').textContent = nome;
+    document.getElementById('pront-meta').textContent = 'Carregando dados...';
+    const iniciais = nome.split(' ').filter(Boolean).map(p => p[0].toUpperCase()).join('').substring(0,2);
+    document.getElementById('pront-avatar').textContent = iniciais || '?';
+    document.getElementById('ficha-conteudo').style.display = 'none';
+    document.getElementById('ficha-loading').style.display = 'flex';
+    document.getElementById('timeline').innerHTML = '';
+    document.getElementById('ev-empty').style.display = 'none';
+    mudarAba('ficha');
+
+    try {
+      const res = await chamarBackend({
+        action: 'obterProntuario',
+        paciente: nome,
+        coren: corenAtual,
+        chave: senhaAtual
       });
 
-      if (evolucoesFiltradas.length === 0) {
-        mostrarFeedback('info', 'ℹ️ Nenhuma evolução encontrada com estes critérios');
-      }
+      document.getElementById('ficha-loading').style.display = 'none';
 
-      // Se filtrou por paciente, carregar atalhos
-      if (paciente && evolucoesFiltradas.length > 0) {
-        carregarAtalhosPorPaciente(evolucoesFiltradas[0].paciente);
-      }
-
-      renderizarTimeline();
-    }
-
-    // ── Limpar filtros ───────────────────────────────────────────────
-    function limparFiltros() {
-      document.getElementById('filter-paciente').value = '';
-      document.getElementById('filter-coren').value = '';
-      document.getElementById('filter-data').value = '';
-      document.getElementById('shortcuts-section').style.display = 'none';
-      evolucoesFiltradas = [...todasEvolucoes];
-      renderizarTimeline();
-      mostrarFeedback('info', 'Filtros limpos');
-    }
-
-    // ── Atalho: Primeira evolução ────────────────────────────────────
-    async function ir_primeira() {
-      const paciente = document.getElementById('filter-paciente').value.trim();
-      if (!paciente) {
-        mostrarFeedback('error', 'Selecione um paciente');
+      if (!res.sucesso) {
+        toast(res.mensagem || 'Erro ao carregar prontuário', 'erro');
         return;
       }
 
-      try {
-        const res = await chamarBackend({
-          action: 'obterPrimeiraEvolucao',
-          paciente: paciente
-        });
+      prontuarioAtual = res;
+      renderFicha(res.cadastro, res.totalEvolucoes);
+      renderEvolucoes(res.evolucoes);
 
-        if (res.sucesso && res.evolucao.linkPdf) {
-          window.open(res.evolucao.linkPdf, '_blank');
-        } else {
-          mostrarFeedback('error', 'Nenhuma evolução encontrada');
-        }
-      } catch (err) {
-        mostrarFeedback('error', 'Erro ao carregar primeira evolução');
-      }
+    } catch (err) {
+      document.getElementById('ficha-loading').style.display = 'none';
+      toast('Erro de conexão: ' + err.message, 'erro');
+    }
+  }
+
+  function renderFicha(c, totalEv) {
+    // Cabeçalho
+    const nomeSocial = c.nomeSocial ? ` (${c.nomeSocial})` : '';
+    document.getElementById('pront-nome').textContent = c.nome + nomeSocial;
+    document.getElementById('pront-meta').textContent =
+      [c.sexo, c.idade ? c.idade + ' anos' : '', c.diagnosticos].filter(Boolean).join(' · ');
+
+    // Stats
+    const dataAdm = c.dataAdmissao || '—';
+    const anoAdm = dataAdm.includes('/') ? dataAdm.split('/')[2] : dataAdm.substring(0,4);
+    document.getElementById('stat-admissao').textContent = anoAdm || '—';
+    document.getElementById('stat-idade').textContent = c.idade || '—';
+    document.getElementById('stat-evolucoes').textContent = totalEv;
+
+    // Badge na aba
+    const badge = document.getElementById('badge-ev');
+    if (totalEv > 0) {
+      badge.textContent = totalEv;
+      badge.style.display = 'inline-flex';
     }
 
-    // ── Atalho: Última evolução ──────────────────────────────────────
-    async function ir_ultima() {
-      const paciente = document.getElementById('filter-paciente').value.trim();
-      if (!paciente) {
-        mostrarFeedback('error', 'Selecione um paciente');
-        return;
-      }
+    // Campos da ficha
+    preencherOuVazio('fi-nome',        c.nome);
+    preencherOuVazio('fi-nomesocial',  c.nomeSocial);
+    preencherOuVazio('fi-nascimento',  c.dataNascimento);
+    preencherOuVazio('fi-sexo',        c.sexo);
+    preencherOuVazio('fi-mae',         c.nomeMae);
+    preencherOuVazio('fi-admissao',    c.dataAdmissao);
+    preencherOuVazio('fi-endereco',    c.endereco);
+    preencherOuVazio('fi-contato',     c.contato);
+    preencherOuVazio('fi-diagnosticos', c.diagnosticos);
+    preencherOuVazio('fi-comorbidades', c.comorbidades);
+    preencherOuVazio('fi-historico',   c.historicoSaude);
+    preencherOuVazio('fi-medicamentos', c.medicamentos);
+    preencherOuVazio('fi-vicios',      c.vicios);
 
-      try {
-        const res = await chamarBackend({
-          action: 'obterUltimaEvolucao',
-          paciente: paciente
-        });
-
-        if (res.sucesso && res.evolucao.linkPdf) {
-          window.open(res.evolucao.linkPdf, '_blank');
-        } else {
-          mostrarFeedback('error', 'Nenhuma evolução encontrada');
-        }
-      } catch (err) {
-        mostrarFeedback('error', 'Erro ao carregar última evolução');
-      }
+    // Evolução inicial
+    const evInicial = c.evolucaoInicialGeral;
+    if (evInicial && evInicial.trim()) {
+      document.getElementById('fi-evolucao-inicial').textContent = evInicial;
+      document.getElementById('fi-evolucao-inicial-wrap').style.display = 'block';
+    } else {
+      document.getElementById('fi-evolucao-inicial-wrap').style.display = 'none';
     }
 
-    // ── Mostrar feedback ──────────────────────────────────────────────
-    function mostrarFeedback(tipo, msg) {
-      const el = document.getElementById('feedback');
-      el.textContent = msg;
-      el.className = 'feedback show ' + tipo;
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      
-      setTimeout(() => {
-        el.classList.remove('show');
-      }, 5000);
+    document.getElementById('ficha-conteudo').style.display = 'block';
+  }
+
+  function renderEvolucoes(evolucoes) {
+    const timeline = document.getElementById('timeline');
+    const empty    = document.getElementById('ev-empty');
+    timeline.innerHTML = '';
+
+    if (!evolucoes || evolucoes.length === 0) {
+      empty.style.display = 'block';
+      return;
     }
 
-    // ── Inicializar ───────────────────────────────────────────────────
-    window.addEventListener('load', carregarEvolucoes);
-  </script>
+    empty.style.display = 'none';
+    let ultimaData = '';
+
+    evolucoes.forEach((ev, idx) => {
+      const dtObj = new Date(ev.dataHora);
+      const dataFmt = isNaN(dtObj) ? ev.dataHora : dtObj.toLocaleDateString('pt-BR');
+      const horaFmt = isNaN(dtObj) ? '' : dtObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+      // Separador de data
+      if (dataFmt !== ultimaData) {
+        const sep = document.createElement('div');
+        sep.className = 'data-sep';
+        sep.innerHTML = `<span>${dataFmt}</span>`;
+        timeline.appendChild(sep);
+        ultimaData = dataFmt;
+      }
+
+      const card = document.createElement('div');
+      card.className = 'ev-card' + (idx === evolucoes.length - 1 ? ' primeira-evolucao' : '');
+
+      const tagPrimeira = idx === evolucoes.length - 1
+        ? '<span class="tag-primeira">⭐ 1ª Evolução</span>'
+        : '';
+
+      card.innerHTML = `
+        <div class="ev-card-header">
+          <div>
+            <div class="ev-data">${dataFmt}${horaFmt ? ' às ' + horaFmt : ''}</div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            ${tagPrimeira}
+            <span class="ev-status">✓ ${ev.status || 'Registrado'}</span>
+          </div>
+        </div>
+        <div class="ev-card-body">
+          <div class="ev-prof-row">
+            <div class="ev-prof-field">
+              <div class="ev-label">COREN</div>
+              <div class="ev-value">${ev.coren || '—'}</div>
+            </div>
+            <div class="ev-prof-field">
+              <div class="ev-label">Profissional</div>
+              <div class="ev-value">${ev.profissional || '—'}</div>
+            </div>
+          </div>
+          <div class="ev-label" style="margin-bottom:8px">Evolução</div>
+          <div class="ev-texto">${escapeHtml(ev.textoCompleto || '—')}</div>
+        </div>
+        <div class="ev-card-footer">
+          ${ev.linkPdf
+            ? `<a href="${ev.linkPdf}" target="_blank" rel="noopener" class="btn-pdf">📄 Ver PDF</a>`
+            : `<button class="btn-pdf" disabled>📄 Sem PDF</button>`
+          }
+        </div>
+      `;
+
+      timeline.appendChild(card);
+    });
+  }
+
+  // ── ABAS ──────────────────────────────────────────────────────────────
+  function mudarAba(aba) {
+    document.querySelectorAll('.aba-btn').forEach(b => {
+      b.classList.toggle('ativa', b.dataset.aba === aba);
+    });
+    document.querySelectorAll('.aba-painel').forEach(p => {
+      p.classList.toggle('ativo', p.id === 'painel-' + aba);
+    });
+  }
+
+  // ── VOLTAR BUSCA ──────────────────────────────────────────────────────
+  function voltarBusca() {
+    document.getElementById('busca-input').value = '';
+    document.getElementById('busca-lista').classList.remove('aberta');
+    mostrarTela('tela-busca');
+  }
+
+  // ── INICIALIZAÇÃO ─────────────────────────────────────────────────────
+  // Foco automático no campo COREN ao carregar
+  window.addEventListener('load', () => {
+    document.getElementById('login-coren').focus();
+  });
+</script>
 
 </body>
 </html>
