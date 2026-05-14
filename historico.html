@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Evolução de Enfermagem</title>
+  <title>Prontuários — Estomaterapia</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
@@ -17,8 +17,11 @@
       --red-light: #fef2f2;
       --amber: #92400e;
       --amber-light: #fffbeb;
+      --purple: #6d28d9;
+      --purple-light: #ede9fe;
+      --teal: #0f766e;
+      --teal-light: #ccfbf1;
       --border: #d1d5db;
-      --border-focus: #1557a0;
       --bg: #f4f6fa;
       --surface: #ffffff;
       --text: #111827;
@@ -34,210 +37,54 @@
       font-family: 'DM Sans', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
-      font-size: 17px;
+      font-size: 16px;
       line-height: 1.6;
-      padding: 0;
     }
 
-    /* ── Topo ── */
+    /* ── Topbar ── */
     .topbar {
       background: var(--blue);
-      padding: 18px 20px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      justify-content: space-between;
+      gap: 12px;
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 100;
     }
-
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
     .topbar-icon {
-      width: 44px;
-      height: 44px;
+      width: 42px; height: 42px;
       background: rgba(255,255,255,0.15);
       border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
     }
-
-    .topbar-title { color: #fff; font-size: 19px; font-weight: 600; line-height: 1.2; }
-    .topbar-sub   { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 2px; }
-
-    .btn-prontuarios {
-      margin-left: auto;
-      background: rgba(255,255,255,0.15);
-      color: #fff;
-      border: 1.5px solid rgba(255,255,255,0.35);
-      border-radius: 8px;
-      padding: 8px 16px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
-    .btn-prontuarios:hover { background: rgba(255,255,255,0.25); }
-
-    /* ── Progress steps ── */
-    .steps-bar {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 12px;
-      display: flex;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .steps-bar::-webkit-scrollbar { display: none; }
-
-    .step-item {
-      flex-shrink: 0;
-      padding: 14px 12px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      border-bottom: 3px solid transparent;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: color 0.2s, border-color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      user-select: none;
-    }
-    .step-item.active { color: var(--blue); border-bottom-color: var(--blue); }
-    .step-item.done   { color: var(--green); }
-    .step-dot {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-      flex-shrink: 0;
-    }
-    .step-item.active .step-dot { background: var(--blue); color: #fff; }
-    .step-item.done   .step-dot { background: var(--green); color: #fff; font-size: 12px; }
-    .step-item.locked { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
-
-    /* ── Container ── */
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 14px 10px;
-    }
-
-    /* ── Sections (steps) ── */
-    .section { display: none; }
-    .section.active { display: block; }
-
-    /* ── Cards ── */
-    .card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: 20px 16px;
-      margin-bottom: 12px;
-      border: 1px solid var(--border);
-    }
-
-    .card-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .card-title-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: var(--blue-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-      flex-shrink: 0;
-    }
-
-    /* ── Labels & inputs ── */
-    .field { margin-bottom: 18px; }
-    .field:last-child { margin-bottom: 0; }
-
-    label {
-      display: block;
-      font-size: 15px;
-      font-weight: 600;
-      color: #374151;
-      margin-bottom: 7px;
-    }
-    label .req { color: var(--red); margin-left: 2px; }
-
-    input[type=text],
-    input[type=date],
-    input[type=password],
-    select,
-    textarea {
-      width: 100%;
-      padding: 14px 15px;
-      border: 1.5px solid var(--border);
+    .topbar-title { color: #fff; font-size: 18px; font-weight: 600; line-height: 1.2; }
+    .topbar-sub   { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 1px; }
+    .btn-link {
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.18);
+      color: #fff; border: none;
       border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 17px;
-      color: var(--text);
-      background: #fafafa;
-      transition: border-color 0.18s, background 0.18s;
-      -webkit-appearance: none;
-      appearance: none;
-      min-height: 54px;
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: background 0.18s; min-height: 38px;
     }
-    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--border-focus);
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(21, 87, 160, 0.1);
-    }
-    textarea { resize: vertical; min-height: 100px; line-height: 1.55; }
+    .btn-link:hover { background: rgba(255,255,255,0.28); }
 
-    small.hint {
-      display: block;
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 6px;
-      line-height: 1.4;
-    }
-
-    /* ── Grid ── */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
-    @media (min-width: 520px) {
-      .grid-2 { grid-template-columns: 1fr 1fr; gap: 14px; }
-      .grid-2 .field { margin-bottom: 0; }
-    }
-
-    /* ── Tela de login separada ── */
+    /* ── Telas ── */
     .tela { display: none; }
     .tela.ativa { display: block; }
 
+    /* ── Container ── */
+    .container { max-width: 860px; margin: 0 auto; padding: 20px 16px; }
+
+    /* ── Tela de login ── */
     .login-wrap {
-      min-height: calc(100vh - 80px);
+      min-height: calc(100vh - 74px);
       display: flex; align-items: center; justify-content: center;
       padding: 24px 16px;
     }
@@ -265,785 +112,750 @@
       text-align: center; font-size: 14px;
       color: var(--muted); margin-bottom: 28px;
     }
-    .login-card .field { margin-bottom: 18px; }
-    .login-card .field label {
+    .field { margin-bottom: 18px; }
+    .field label {
       display: block; font-size: 14px;
       font-weight: 600; color: #374151; margin-bottom: 7px;
     }
-    .login-card .field input {
+    .field input {
       width: 100%; padding: 13px 14px;
       border: 1.5px solid var(--border);
       border-radius: var(--radius-sm);
       font-family: inherit; font-size: 16px;
       background: #fafafa; transition: border-color 0.18s, background 0.18s;
-      -webkit-appearance: none; min-height: 50px;
+      -webkit-appearance: none;
     }
-    .login-card .field input:focus {
+    .field input:focus {
       outline: none; border-color: var(--blue);
       background: #fff; box-shadow: 0 0 0 3px rgba(21,87,160,0.1);
     }
-    .btn-entrar {
+    .btn-primary {
       width: 100%; padding: 14px;
       background: var(--blue); color: #fff;
       border: none; border-radius: var(--radius-sm);
       font-family: inherit; font-size: 16px; font-weight: 700;
       cursor: pointer; transition: background 0.18s;
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      min-height: 50px; margin-top: 4px;
+      min-height: 50px;
     }
-    .btn-entrar:hover { background: #0e3f7a; }
-    .btn-entrar:disabled { opacity: 0.55; cursor: not-allowed; }
-    .login-erro {
-      display: none; margin-top: 14px;
-      padding: 10px 14px;
-      background: var(--red-light); color: var(--red);
-      border: 1px solid #fca5a5; border-radius: var(--radius-sm);
-      font-size: 14px; font-weight: 500; text-align: center;
+    .btn-primary:hover { background: #0e3f7a; }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* ── Tela de busca ── */
+    .search-hero {
+      background: var(--blue);
+      padding: 28px 20px;
+      text-align: center;
     }
-    .spinner-sm {
-      display: inline-block; width: 18px; height: 18px;
-      border: 2.5px solid rgba(255,255,255,0.4);
-      border-top-color: #fff;
+    .search-hero h2 { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .search-hero p { color: rgba(255,255,255,0.75); font-size: 14px; margin-bottom: 20px; }
+    .search-box {
+      max-width: 520px; margin: 0 auto;
+      position: relative;
+    }
+    .search-input {
+      width: 100%; padding: 14px 52px 14px 18px;
+      border: none; border-radius: var(--radius);
+      font-family: inherit; font-size: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      -webkit-appearance: none;
+    }
+    .search-input:focus { outline: none; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+    .search-icon {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      font-size: 20px; pointer-events: none; color: var(--muted);
+    }
+
+    /* ── Autocomplete lista ── */
+    .autocomplete-wrap { position: relative; }
+    .autocomplete-lista {
+      display: none;
+      position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      max-height: 280px; overflow-y: auto;
+      z-index: 200;
+    }
+    .autocomplete-lista.aberta { display: block; }
+    .autocomplete-item {
+      padding: 13px 16px; cursor: pointer;
+      font-size: 15px; border-bottom: 1px solid #f3f4f6;
+      transition: background 0.12s;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .autocomplete-item:last-child { border-bottom: none; }
+    .autocomplete-item:hover, .autocomplete-item.focus { background: var(--blue-light); color: var(--blue); }
+    .autocomplete-item::before { content: '👤'; font-size: 14px; }
+    .autocomplete-vazio {
+      padding: 16px; color: var(--muted);
+      font-size: 14px; text-align: center;
+    }
+
+    /* ── Prontuário ── */
+    .prontuario-header {
+      background: var(--blue);
+      padding: 20px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .prontuario-avatar {
+      width: 52px; height: 52px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+      font-weight: 700; color: #fff;
+    }
+    .prontuario-nome { color: #fff; font-size: 19px; font-weight: 700; line-height: 1.2; }
+    .prontuario-meta { color: rgba(255,255,255,0.75); font-size: 13px; margin-top: 3px; }
+    .btn-voltar-busca {
+      margin-left: auto; flex-shrink: 0;
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.18); color: #fff;
+      border: none; border-radius: 8px;
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 5px;
+      transition: background 0.15s;
+    }
+    .btn-voltar-busca:hover { background: rgba(255,255,255,0.28); }
+
+    /* ── Seção de abas ── */
+    .abas-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex; overflow-x: auto;
+      scrollbar-width: none; padding: 0 8px;
+    }
+    .abas-nav::-webkit-scrollbar { display: none; }
+    .aba-btn {
+      flex-shrink: 0; padding: 14px 16px;
+      font-size: 13px; font-weight: 600;
+      color: var(--muted); background: none; border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer; white-space: nowrap;
+      transition: color 0.18s, border-color 0.18s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .aba-btn.ativa { color: var(--blue); border-bottom-color: var(--blue); }
+
+    .aba-painel { display: none; }
+    .aba-painel.ativo { display: block; }
+
+    /* ── Cards de info ── */
+    .info-section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin-bottom: 16px; overflow: hidden;
+    }
+    .info-section-header {
+      padding: 14px 18px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .info-section-icon {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    @media (min-width: 540px) {
+      .info-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 760px) {
+      .info-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .info-item {
+      padding: 14px 18px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .info-item:last-child { border-bottom: none; }
+    .info-label {
+      font-size: 11px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 4px;
+    }
+    .info-value {
+      font-size: 15px; font-weight: 500; color: var(--text);
+      line-height: 1.5;
+    }
+    .info-value.vazio { color: var(--muted); font-style: italic; font-weight: 400; }
+
+    /* ── Banner evolução inicial ── */
+    .evolucao-inicial-banner {
+      background: linear-gradient(135deg, #1a3a6b 0%, #1557a0 100%);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+      position: relative; overflow: hidden;
+    }
+    .evolucao-inicial-banner::before {
+      content: '📋';
+      position: absolute; right: 16px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 48px; opacity: 0.15;
+    }
+    .evolucao-inicial-label {
+      font-size: 11px; font-weight: 700;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .evolucao-inicial-label::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%; background: #4ade80;
+      display: inline-block;
+    }
+    .evolucao-inicial-texto {
+      color: #fff; font-size: 15px;
+      line-height: 1.65; white-space: pre-line;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+    }
+    .badge-blue { background: var(--blue-light); color: var(--blue); }
+    .badge-green { background: var(--green-light); color: var(--green); }
+    .badge-amber { background: var(--amber-light); color: var(--amber); }
+    .badge-purple { background: var(--purple-light); color: var(--purple); }
+
+    /* ── Estatísticas rápidas ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px; margin-bottom: 16px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 12px; text-align: center;
+    }
+    .stat-num { font-size: 24px; font-weight: 700; color: var(--blue); line-height: 1; }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    /* ── Timeline evoluções ── */
+    .timeline { display: flex; flex-direction: column; gap: 12px; }
+    .ev-card {
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: box-shadow 0.18s;
+    }
+    .ev-card:hover { box-shadow: 0 4px 14px rgba(21,87,160,0.08); }
+
+    .ev-card-header {
+      padding: 13px 16px;
+      background: var(--blue-light);
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .ev-data { font-weight: 700; color: var(--blue); font-size: 15px; }
+    .ev-hora { font-size: 13px; color: var(--muted); margin-top: 1px; }
+    .ev-status {
+      padding: 4px 10px;
+      background: var(--green-light); color: var(--green);
+      border-radius: 20px; font-size: 12px; font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .ev-card-body { padding: 16px; }
+    .ev-prof-row {
+      display: flex; gap: 16px; margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .ev-prof-field { flex: 1; min-width: 120px; }
+    .ev-label {
+      font-size: 11px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 4px;
+    }
+    .ev-value { font-size: 14px; font-weight: 500; }
+
+    .ev-texto {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px;
+      font-size: 14px; line-height: 1.7;
+      white-space: pre-line; color: var(--text);
+    }
+
+    .ev-card-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 8px; align-items: center;
+    }
+    .btn-pdf {
+      padding: 8px 14px;
+      background: var(--blue-light); color: var(--blue);
+      border: 1.5px solid var(--blue-mid);
+      border-radius: 8px; font-family: inherit;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: background 0.15s;
+    }
+    .btn-pdf:hover { background: #d0e4f8; }
+    .btn-pdf:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── Primeira evolução destaque na aba ── */
+    .ev-card.primeira-evolucao {
+      border-color: #1557a0;
+      box-shadow: 0 0 0 2px rgba(21,87,160,0.15);
+    }
+    .ev-card.primeira-evolucao .ev-card-header {
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    }
+    .tag-primeira {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px;
+      background: var(--blue); color: #fff;
+      border-radius: 20px; font-size: 11px; font-weight: 700;
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      text-align: center; padding: 48px 20px;
+      color: var(--muted);
+    }
+    .empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .empty-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .empty-sub { font-size: 14px; }
+
+    /* ── Loading ── */
+    .loading-wrap {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 56px 20px; gap: 14px;
+    }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--blue-light);
+      border-top-color: var(--blue);
       border-radius: 50%;
-      animation: spin 0.75s linear infinite;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-txt { color: var(--muted); font-size: 14px; }
+
+    /* ── Feedback toast ── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1f2937; color: #fff;
+      padding: 12px 20px; border-radius: 10px;
+      font-size: 14px; font-weight: 500;
+      z-index: 999; transition: transform 0.3s ease;
+      max-width: 90vw; text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.erro { background: var(--red); }
+    .toast.ok { background: var(--green); }
+
+    /* ── Separador de data ── */
+    .data-sep {
+      text-align: center; position: relative;
+      margin: 8px 0 4px;
+    }
+    .data-sep::before {
+      content: ''; position: absolute;
+      left: 0; right: 0; top: 50%;
+      height: 1px; background: var(--border);
+    }
+    .data-sep span {
+      background: var(--bg); padding: 0 12px;
+      font-size: 12px; color: var(--muted);
+      font-weight: 600; position: relative;
     }
 
-    /* ── Formulário (tela após login) ── */
-    .tela-form .steps-bar { display: flex; }
-
-    /* ── Chip do profissional no topbar ── */
+    /* ── Profissional badge no topbar ── */
     .prof-chip {
       background: rgba(255,255,255,0.15);
       color: rgba(255,255,255,0.9);
       padding: 5px 12px; border-radius: 20px;
       font-size: 12px; font-weight: 600;
-      display: none; align-items: center; gap: 5px;
+      display: flex; align-items: center; gap: 5px;
       flex-shrink: 0;
     }
 
-    /* ── Lesões ── */
-    .lesao-bloco {
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 14px;
-      overflow: hidden;
-    }
-
-    .lesao-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 16px;
-      background: #f8fafc;
-      border-bottom: 1.5px solid var(--border);
-    }
-
-    .lesao-titulo {
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--blue);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .lesao-body { padding: 16px; }
-
-    .btn-remover {
-      background: none;
-      border: none;
-      color: var(--red);
-      font-size: 20px;
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 8px;
-      min-width: 44px;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.15s;
-    }
-    .btn-remover:active { background: var(--red-light); }
-
-    .btn-adicionar {
-      width: 100%;
-      padding: 16px;
-      background: var(--blue-light);
-      border: 1.5px dashed var(--blue-mid);
-      border-radius: var(--radius-sm);
-      color: var(--blue);
-      font-family: inherit;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.18s;
-    }
-    .btn-adicionar:active { background: #d0e4f8; }
-
-    /* ── Upload de fotos ── */
-    .btn-upload {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      min-height: 62px;
-      background: var(--blue-light);
-      border: 1.5px dashed var(--blue-mid);
-      border-radius: var(--radius-sm);
-      color: var(--blue);
-      font-family: inherit;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.18s;
-    }
-    .btn-upload:active { background: #d0e4f8; }
-
-    #fotos-count {
-      display: block;
-      text-align: center;
-      font-size: 14px;
-      color: var(--muted);
-      margin-top: 10px;
-    }
-
-    #preview-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 14px;
-    }
-    @media (min-width: 400px) { #preview-container { grid-template-columns: repeat(4, 1fr); } }
-    @media (min-width: 560px) { #preview-container { grid-template-columns: repeat(5, 1fr); } }
-
-    .preview-item {
-      position: relative;
-      aspect-ratio: 1;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: #f0f0f0;
-    }
-    .preview-item img { width: 100%; height: 100%; object-fit: cover; }
-    .preview-item .btn-remover-foto {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      font-size: 14px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .preview-item .foto-nome {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      background: rgba(0,0,0,0.5);
-      color: #fff;
-      font-size: 10px;
-      padding: 3px 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* ── Feedback ── */
-    .feedback-card {
-      display: none;
-      padding: 18px;
-      border-radius: var(--radius-sm);
-      font-size: 16px;
-      font-weight: 600;
-      text-align: center;
-      line-height: 1.5;
-      margin-top: 10px;
-    }
-    .feedback-card.sucesso { background: var(--green-light); color: var(--green); border: 1px solid #a7f3d0; }
-    .feedback-card.erro    { background: var(--red-light);   color: var(--red);   border: 1px solid #fca5a5; }
-
-    .spinner {
-      display: none;
-      text-align: center;
-      color: var(--muted);
-      font-size: 15px;
-      padding: 14px;
-      margin-top: 6px;
-    }
-    .spinner-ring {
-      display: inline-block;
-      width: 22px; height: 22px;
-      border: 2.5px solid #e5e7eb;
-      border-top-color: var(--blue);
-      border-radius: 50%;
-      animation: spin 0.75s linear infinite;
-      vertical-align: middle;
-      margin-right: 8px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── Aviso paciente ── */
-    #aviso-paciente {
-      display: none;
-      margin-top: 8px;
-      font-size: 14px;
-      color: var(--amber);
-      font-weight: 500;
-      padding: 8px 10px;
-      background: var(--amber-light);
-      border-radius: 6px;
-      border: 1px solid #fde68a;
-    }
-
-    /* ── Navegação entre steps ── */
-    .nav-row {
-      display: flex;
-      gap: 12px;
-      margin-top: 16px;
-      margin-bottom: 4px;
-    }
-    .btn-nav {
-      flex: 1;
-      padding: 16px;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1.5px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      transition: background 0.15s;
-      min-height: 56px;
-    }
-    .btn-nav:active { background: #f3f4f6; }
-    .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn-nav.primary {
-      background: var(--blue);
-      color: #fff;
-      border-color: var(--blue);
-    }
-    .btn-nav.primary:active { background: #0e3f7a; }
-
-    /* ── Botão Enviar (inline na última aba) ── */
-    #btn-enviar {
-      display: block;
-      width: 100%;
-      margin-top: 16px;
-      padding: 17px;
-      background: var(--green);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.01em;
-      transition: background 0.18s;
-    }
-    #btn-enviar:disabled { background: #9ca3af; cursor: not-allowed; }
-    #btn-enviar:not(:disabled):active { background: #064e2e; }
-
-    .rodape-hint {
-      text-align: center;
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 8px;
-      margin-bottom: 20px;
-    }
-
-    /* ── Autocomplete de pacientes ── */
-    .autocomplete-wrap {
-      position: relative;
-    }
-
-    .autocomplete-lista {
-      display: none;
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0; right: 0;
-      background: var(--surface);
-      border: 1.5px solid var(--border-focus);
-      border-radius: var(--radius-sm);
-      max-height: 220px;
-      overflow-y: auto;
-      z-index: 200;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    }
-
-    .autocomplete-lista.aberta { display: block; }
-
-    .autocomplete-item {
-      padding: 14px 15px;
-      font-size: 16px;
-      color: var(--text);
-      cursor: pointer;
-      border-bottom: 1px solid #f3f4f6;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .autocomplete-item:last-child { border-bottom: none; }
-    .autocomplete-item:active,
-    .autocomplete-item.selecionado { background: var(--blue-light); color: var(--blue); font-weight: 600; }
-
-    .autocomplete-vazio {
-      padding: 14px 15px;
-      font-size: 15px;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    /* ── Download PDF ── */
-    .btn-download {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      margin-top: 14px;
-      padding: 16px;
-      background: var(--blue);
-      color: #fff;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      text-align: center;
-      transition: background 0.18s;
-    }
-    .btn-download:active { background: #0e3f7a; }
-
-    /* ── Botão de ação secundária ── */
-    .btn-acao-secundaria {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 15px;
-      background: #f59e0b;
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      text-align: center;
-      transition: background 0.18s;
-    }
-    .btn-acao-secundaria:active { background: #d97706; }
-    .btn-acao-secundaria:hover { background: #f59e0b; }
-
-    #btn-nova-evolucao {
-      display: block;
-      width: 100%;
-      margin-top: 10px;
-      padding: 15px;
-      background: transparent;
-      color: var(--muted);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    #btn-nova-evolucao:active { background: #f3f4f6; }
-
-
-    /* ── Toggle de modo de evolução ── */
-    .modo-toggle {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 14px;
-      background: #f3f4f6;
-      padding: 5px;
-      border-radius: 12px;
-    }
-    .modo-btn {
-      flex: 1;
-      padding: 11px 10px;
-      border: none;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      background: transparent;
-      color: var(--muted);
-      transition: background 0.15s, color 0.15s, box-shadow 0.15s;
-      min-height: 46px;
-    }
-    .modo-btn.ativo {
-      background: var(--surface);
-      color: var(--blue);
-      box-shadow: 0 1px 5px rgba(0,0,0,0.12);
-    }
-    .modo-btn:not(.ativo):active { background: #e5e7eb; }
-
-    /* ── Campo "Outro" dinâmico ── */
-    .campo-outro {
-      display: none;
-      margin-top: 8px;
-      padding: 12px;
-      background: var(--blue-light);
-      border-radius: 8px;
-      border-left: 3px solid var(--blue);
-    }
-    .campo-outro.visivel {
-      display: block;
-    }
-    .campo-outro input {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1.5px solid var(--blue);
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 15px;
-      color: var(--text);
-      background: #fff;
-    }
-    .campo-outro input:focus {
-      outline: none;
-      border-color: var(--blue-mid);
-      box-shadow: 0 0 0 3px rgba(45, 125, 214, 0.15);
-    }
-    .campo-outro label {
-      font-size: 13px;
-      margin-bottom: 5px;
-      color: var(--blue);
-      font-weight: 600;
-    }
-
-    /* ── Desktop ── */
-    @media (min-width: 680px) {
-      body { padding-top: 0; }
-      .container { padding: 24px 20px; }
-      .card { padding: 24px; }
+    /* ── Responsividade ── */
+    @media (max-width: 420px) {
+      .stats-row { grid-template-columns: repeat(3, 1fr); }
+      .stat-num { font-size: 20px; }
+      .prontuario-header { flex-wrap: wrap; }
     }
   </style>
 </head>
 <body>
 
-<!-- Topbar -->
+<!-- ── Topbar ── -->
 <div class="topbar">
-  <div class="topbar-icon">📋</div>
-  <div>
-    <div class="topbar-title">Evolução de Enfermagem</div>
-    <div class="topbar-sub">Estomaterapia — Ambulatório de Curativos</div>
+  <div class="topbar-left">
+    <div class="topbar-icon">🗂️</div>
+    <div>
+      <div class="topbar-title">Prontuários</div>
+      <div class="topbar-sub" id="topbar-sub">Ambulatório de Estomaterapia</div>
+    </div>
   </div>
-  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto;">
-    <span class="prof-chip" id="chip-profissional">👤 <span id="chip-coren"></span></span>
-    <a class="btn-prontuarios" href="https://laeeufc.github.io/evolucoes/agenda.html" target="_blank">📅 Agenda</a>
-    <a id="btn-prontuarios" class="btn-prontuarios" href="https://laeeufc.github.io/evolucoes/historico.html" target="_blank">🗂️ Prontuários</a>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <span class="prof-chip" id="chip-profissional" style="display:none">👤 <span id="chip-nome"></span></span>
+    <a href="index.html" class="btn-link">📝 Evoluções</a>
   </div>
 </div>
 
-<!-- ══ TELA 1 — LOGIN ══ -->
+<!-- ══════════════════════════════════════════
+     TELA 1 — LOGIN
+══════════════════════════════════════════ -->
 <div class="tela ativa" id="tela-login">
   <div class="login-wrap">
     <div class="login-card">
       <div class="login-icon">🔐</div>
-      <div class="login-title">Acesso ao Sistema</div>
-      <div class="login-sub">Informe suas credenciais para registrar evoluções</div>
+      <div class="login-title">Acesso aos Prontuários</div>
+      <div class="login-sub">Informe suas credenciais de profissional</div>
 
       <div class="field">
         <label for="login-coren">COREN</label>
-        <input type="text" id="login-coren" placeholder="Ex: 123456-RN"
-               autocomplete="off" inputmode="text"
-               style="text-transform:uppercase"
-               oninput="this.value=this.value.toUpperCase()"
-               onkeydown="if(event.key==='Enter') entrar()">
+        <input type="text" id="login-coren" placeholder="Ex: 123456" autocomplete="off"
+               inputmode="text" style="text-transform:uppercase"
+               oninput="this.value=this.value.toUpperCase()">
       </div>
       <div class="field">
         <label for="login-senha">Senha</label>
-        <input type="password" id="login-senha" placeholder="••••••••"
-               autocomplete="current-password"
+        <input type="password" id="login-senha" placeholder="••••••••" autocomplete="current-password"
                onkeydown="if(event.key==='Enter') entrar()">
       </div>
 
-      <button class="btn-entrar" id="btn-entrar" onclick="entrar()">
+      <button class="btn-primary" id="btn-entrar" onclick="entrar()">
         <span id="btn-entrar-txt">Entrar</span>
-        <div class="spinner-sm" id="spinner-login" style="display:none"></div>
+        <div class="spinner" id="spinner-login" style="display:none;width:20px;height:20px;border-width:2px;"></div>
       </button>
-      <div class="login-erro" id="login-erro"></div>
     </div>
   </div>
 </div>
 
-<!-- ══ TELA 2 — FORMULÁRIO ══ -->
-<div class="tela tela-form" id="tela-form">
+<!-- ══════════════════════════════════════════
+     TELA 2 — BUSCA DE PACIENTE
+══════════════════════════════════════════ -->
+<div class="tela" id="tela-busca">
+  <div class="search-hero">
+    <h2>Buscar Paciente</h2>
+    <p>Digite o nome para pesquisar no cadastro</p>
+    <div class="search-box autocomplete-wrap">
+      <input class="search-input" type="text" id="busca-input"
+             placeholder="Nome do paciente..."
+             autocomplete="off"
+             oninput="filtrarBusca()"
+             onfocus="filtrarBusca()">
+      <span class="search-icon">🔍</span>
+      <div class="autocomplete-lista" id="busca-lista"></div>
+    </div>
+  </div>
 
-<!-- Barra de steps -->
-<div class="steps-bar" id="steps-bar">
-  <div class="step-item active" onclick="irParaStep(0)" id="step-tab-0">
-    <div class="step-dot">1</div> Atendimento
-  </div>
-  <div class="step-item" onclick="irParaStep(1)" id="step-tab-1">
-    <div class="step-dot">2</div> Lesões
-  </div>
-  <div class="step-item" onclick="irParaStep(2)" id="step-tab-2">
-    <div class="step-dot">3</div> Procedimentos
-  </div>
-  <div class="step-item" onclick="irParaStep(3)" id="step-tab-3">
-    <div class="step-dot">4</div> Fotos &amp; Envio
+  <div class="container">
+    <div id="busca-loading" style="display:none">
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <div class="loading-txt">Carregando cadastros...</div>
+      </div>
+    </div>
+    <div id="busca-instrucao" class="empty-state">
+      <div class="empty-icon">👆</div>
+      <div class="empty-title">Digite o nome acima</div>
+      <div class="empty-sub">Os pacientes cadastrados aparecerão como sugestão</div>
+    </div>
   </div>
 </div>
 
-<div class="container">
+<!-- ══════════════════════════════════════════
+     TELA 3 — PRONTUÁRIO DO PACIENTE
+══════════════════════════════════════════ -->
+<div class="tela" id="tela-prontuario">
 
-  <!-- STEP 0 — Dados do atendimento -->
-  <div class="section active" id="sec-0">
-    <div class="card">
-      <div class="card-title">
-        <div class="card-title-icon">📅</div>
-        Dados do atendimento
+  <!-- Cabeçalho do paciente -->
+  <div class="prontuario-header" id="pront-header">
+    <div class="prontuario-avatar" id="pront-avatar">?</div>
+    <div style="flex:1;min-width:0">
+      <div class="prontuario-nome" id="pront-nome">—</div>
+      <div class="prontuario-meta" id="pront-meta">—</div>
+    </div>
+    <button class="btn-voltar-busca" onclick="voltarBusca()">← Voltar</button>
+  </div>
+
+  <!-- Abas -->
+  <div class="abas-nav">
+    <button class="aba-btn ativa" data-aba="ficha" onclick="mudarAba('ficha')">
+      📋 Ficha Clínica
+    </button>
+    <button class="aba-btn" data-aba="evolucoes" onclick="mudarAba('evolucoes')" id="aba-ev-btn">
+      📅 Evoluções <span id="badge-ev" style="display:none" class="badge badge-blue">0</span>
+    </button>
+  </div>
+
+  <div class="container">
+
+    <!-- Painel: Ficha Clínica -->
+    <div class="aba-painel ativo" id="painel-ficha">
+      <div id="ficha-loading" class="loading-wrap" style="display:none">
+        <div class="spinner"></div>
+        <div class="loading-txt">Carregando prontuário...</div>
       </div>
+      <div id="ficha-conteudo" style="display:none">
 
-      <div class="grid-2">
-        <div class="field">
-          <label>Data <span class="req">*</span></label>
-          <input type="date" id="data">
+        <!-- Estatísticas rápidas -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-num" id="stat-admissao">—</div>
+            <div class="stat-label">Admissão</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-idade">—</div>
+            <div class="stat-label">Idade</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-evolucoes">0</div>
+            <div class="stat-label">Evoluções</div>
+          </div>
         </div>
-        <div class="field">
-          <label>Retorno</label>
-          <input type="date" id="retorno">
+
+        <!-- Identificação -->
+        <div class="info-section">
+          <div class="info-section-header">
+            <div class="info-section-icon" style="background:var(--blue-light)">👤</div>
+            Identificação
+          </div>
+          <div class="info-grid cols3">
+            <div class="info-item">
+              <div class="info-label">Nome Completo</div>
+              <div class="info-value" id="fi-nome">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Nome Social</div>
+              <div class="info-value" id="fi-nomesocial">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Data de Nascimento</div>
+              <div class="info-value" id="fi-nascimento">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Sexo</div>
+              <div class="info-value" id="fi-sexo">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Nome da Mãe</div>
+              <div class="info-value" id="fi-mae">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Data de Admissão</div>
+              <div class="info-value" id="fi-admissao">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contato -->
+        <div class="info-section">
+          <div class="info-section-header">
+            <div class="info-section-icon" style="background:var(--teal-light)">📍</div>
+            Contato & Localização
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Endereço</div>
+              <div class="info-value" id="fi-endereco">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Contato / Telefone</div>
+              <div class="info-value" id="fi-contato">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clínico -->
+        <div class="info-section">
+          <div class="info-section-header">
+            <div class="info-section-icon" style="background:var(--red-light)">🏥</div>
+            Dados Clínicos
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Diagnósticos</div>
+              <div class="info-value" id="fi-diagnosticos">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Comorbidades</div>
+              <div class="info-value" id="fi-comorbidades">—</div>
+            </div>
+            <div class="info-item" style="grid-column:1/-1">
+              <div class="info-label">Histórico de Saúde</div>
+              <div class="info-value" id="fi-historico">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medicamentos & Vícios -->
+        <div class="info-section">
+          <div class="info-section-header">
+            <div class="info-section-icon" style="background:var(--purple-light)">💊</div>
+            Medicamentos & Hábitos
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Medicamentos em Uso</div>
+              <div class="info-value" id="fi-medicamentos">—</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Vícios / Hábitos</div>
+              <div class="info-value" id="fi-vicios">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evolução Inicial — destaque -->
+        <div id="fi-evolucao-inicial-wrap">
+          <div class="evolucao-inicial-banner">
+            <div class="evolucao-inicial-label">Evolução Geral Inicial — Admissão</div>
+            <div class="evolucao-inicial-texto" id="fi-evolucao-inicial">—</div>
+          </div>
+        </div>
+
+      </div><!-- /ficha-conteudo -->
+    </div><!-- /painel-ficha -->
+
+    <!-- Painel: Evoluções -->
+    <div class="aba-painel" id="painel-evolucoes">
+      <div id="ev-loading" class="loading-wrap" style="display:none">
+        <div class="spinner"></div>
+        <div class="loading-txt">Carregando evoluções...</div>
+      </div>
+      <div id="ev-conteudo">
+        <div class="timeline" id="timeline"></div>
+        <div class="empty-state" id="ev-empty" style="display:none">
+          <div class="empty-icon">📭</div>
+          <div class="empty-title">Nenhuma evolução registrada</div>
+          <div class="empty-sub">As evoluções deste paciente aparecerão aqui</div>
         </div>
       </div>
-
-      <div class="field">
-        <label>Nome do Paciente <span class="req">*</span></label>
-        <div class="autocomplete-wrap" id="autocomplete-wrap">
-          <input type="text" id="paciente" placeholder="⏳ Carregando pacientes..."
-                 autocomplete="off" disabled oninput="filtrarPacientes()" onfocus="filtrarPacientes()">
-          <div class="autocomplete-lista" id="autocomplete-lista"></div>
-        </div>
-        <div id="aviso-paciente">⚠️ Selecione um paciente válido da lista.</div>
-      </div>
     </div>
 
-    <div class="nav-row">
-      <button class="btn-nav primary" onclick="irParaStep(1)">Próximo →</button>
-    </div>
-  </div>
+  </div><!-- /container -->
+</div><!-- /tela-prontuario -->
 
-  <!-- STEP 1 — Lesões / Texto Livre -->
-  <div class="section" id="sec-1">
-
-    <!-- Toggle de modo -->
-    <div class="modo-toggle">
-      <button class="modo-btn ativo" id="btn-modo-estruturado" onclick="mudarModo('estruturado')">📋 Estruturado</button>
-      <button class="modo-btn" id="btn-modo-livre" onclick="mudarModo('livre')">✏️ Texto Livre</button>
-    </div>
-
-    <!-- Card Lesões (modo estruturado) -->
-    <div id="card-lesoes" class="card">
-      <div class="card-title">
-        <div class="card-title-icon">🩹</div>
-        Lesões
-      </div>
-      <div id="container-lesoes"></div>
-      <button class="btn-adicionar" onclick="adicionarLesao()">+ Adicionar lesão</button>
-    </div>
-
-    <!-- Card Texto Livre -->
-    <div id="card-texto-livre" class="card" style="display:none">
-      <div class="card-title">
-        <div class="card-title-icon">✏️</div>
-        Evolução Clínica
-      </div>
-      <div class="field">
-        <textarea id="textoLivre" placeholder="Descreva a evolução clínica livremente...&#10;&#10;Ex: Paciente compareceu ao ambulatório para troca de curativo. Lesão em pé direito com bordas regulares, exsudato seroso em pequena quantidade..." style="min-height:280px"></textarea>
-        <small class="hint">O texto será registrado e incluído no PDF exatamente como digitado.</small>
-      </div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn-nav" onclick="irParaStep(0)">← Voltar</button>
-      <button class="btn-nav primary" onclick="irParaProximo1()">Próximo →</button>
-    </div>
-  </div>
-
-  <!-- STEP 2 — Procedimentos -->
-  <div class="section" id="sec-2">
-    <div class="card">
-      <div class="card-title">
-        <div class="card-title-icon">🧴</div>
-        Procedimentos
-      </div>
-
-      <div class="field">
-        <label>Limpeza <span class="req">*</span></label>
-        <input type="text" id="limpeza" placeholder="Ex: SF 0,9%">
-      </div>
-
-      <div class="field">
-        <label>Desbridamento</label>
-        <select id="desbridamento">
-          <option value="Não">Não</option>
-          <option value="Sim">Sim</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>Cobertura Primária <span class="req">*</span></label>
-        <input type="text" id="coberturaPrimaria" placeholder="Ex: Hidrofibra com prata">
-      </div>
-
-      <div class="field">
-        <label>Cobertura Secundária <span class="req">*</span></label>
-        <input type="text" id="coberturaSecundaria" placeholder="Ex: Curafix">
-      </div>
-
-      <div class="field">
-        <label>Orientações</label>
-        <input type="text" id="orientacoes" placeholder="Ex: higiene local, dieta, repouso">
-      </div>
-
-      <div class="field">
-        <label>Observações</label>
-        <textarea id="observacoes" placeholder="Anotações adicionais (opcional)"></textarea>
-      </div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn-nav" onclick="irParaStep(1)">← Voltar</button>
-      <button class="btn-nav primary" onclick="irParaStep(3)">Próximo →</button>
-    </div>
-  </div>
-
-  <!-- STEP 3 — Fotos & Envio -->
-  <div class="section" id="sec-3">
-    <div class="card">
-      <div class="card-title">
-        <div class="card-title-icon">📷</div>
-        Fotos da Lesão
-      </div>
-
-      <div class="field">
-        <input type="file" id="fotos-input" accept="image/*" multiple style="display:none">
-        <button type="button" class="btn-upload" onclick="document.getElementById('fotos-input').click()">
-          📁 Escolher fotos
-        </button>
-        <span id="fotos-count"></span>
-      </div>
-
-      <div id="preview-container"></div>
-    </div>
-
-    <div class="card">
-      <div class="spinner" id="spinner">
-        <span class="spinner-ring"></span><span id="spinner-texto"> Gerando relatório, aguarde...</span>
-      </div>
-      <div class="feedback-card" id="feedback"></div>
-      <div id="sucesso-acoes" style="display:none">
-        <a id="link-pdf" href="#" target="_blank" rel="noopener" class="btn-download">
-          📄 Abrir / Baixar PDF
-        </a>
-        <button id="btn-editar-evolucao" onclick="editarEvolucao()" class="btn-acao-secundaria">
-          ✏️ Editar Evolução
-        </button>
-        <button id="btn-nova-evolucao" onclick="novaEvolucao()">+ Nova Evolução</button>
-      </div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn-nav" onclick="voltarDoStep3()">← Voltar</button>
-    </div>
-
-    <button id="btn-enviar" onclick="enviar()">✉️ Enviar Evolução</button>
-    <div class="rodape-hint" id="rodape-hint"></div>
-  </div>
-
-</div><!-- /container -->
-
-</div><!-- /tela-form -->
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
 <script>
-  // ── CONFIGURAÇÃO ─────────────────────────────────────────────
-  // Cole aqui a URL do seu Google Apps Script publicado como Web App
+  // ── CONFIGURAÇÃO ─────────────────────────────────────────────────────
   const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbz4TI1WX_isAaOM37c6C4qwaXUmidOG_yDzfBYsdaJm0Zddiz8i88UlT9iCqSKJmr0j/exec';
 
-  // ── Utilitário de chamada ao backend ─────────────────────────
+  // ── Estado ────────────────────────────────────────────────────────────
+  let corenAtual   = '';
+  let senhaAtual   = '';
+  let nomeProf     = '';
+  let pacientes    = [];
+  let prontuarioAtual = null;
+
+  // ── Utilitários ───────────────────────────────────────────────────────
   async function chamarBackend(payload) {
-    const res = await fetch(BACKEND_URL, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
+    try {
+      const res = await fetch(BACKEND_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+      });
+      const txt = await res.text();
+      return JSON.parse(txt);
+    } catch (err) {
+      // Fallback GET para leituras
+      const acoesGet = ['listarPacientes', 'listarEvolucoes'];
+      if (acoesGet.includes(payload.action)) {
+        const url = BACKEND_URL + '?action=' + encodeURIComponent(payload.action);
+        const res2 = await fetch(url, { method: 'GET', redirect: 'follow' });
+        return JSON.parse(await res2.text());
+      }
+      throw err;
+    }
   }
 
-  // ── Estado do profissional logado ────────────────────────────
-  let corenLogado  = '';
-  let senhaLogada  = '';
-  let chaveConfirmada = false;
-  let modoEdicao   = false;  // Flag para controlar se está editando
-  let ultimosPdf   = null;   // Armazenar dados do último PDF enviado
-
-  // ── Telas ────────────────────────────────────────────────────
   function mostrarTela(id) {
     document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
     document.getElementById(id).classList.add('ativa');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // ── LOGIN ────────────────────────────────────────────────────
+  let toastTimer;
+  function toast(msg, tipo = '') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show ' + tipo;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 4000);
+  }
+
+  function preencherOuVazio(id, valor) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (valor && valor.toString().trim()) {
+      el.textContent = valor;
+      el.classList.remove('vazio');
+    } else {
+      el.textContent = 'Não informado';
+      el.classList.add('vazio');
+    }
+  }
+
+  // ── LOGIN ─────────────────────────────────────────────────────────────
   async function entrar() {
     const coren = document.getElementById('login-coren').value.trim().toUpperCase();
     const senha = document.getElementById('login-senha').value.trim();
-    const erroEl = document.getElementById('login-erro');
-    erroEl.style.display = 'none';
 
     if (!coren || !senha) {
-      erroEl.textContent = 'Preencha COREN e senha.';
-      erroEl.style.display = 'block';
+      toast('Preencha COREN e senha', 'erro');
       return;
     }
 
-    const btn    = document.getElementById('btn-entrar');
+    const btn = document.getElementById('btn-entrar');
     const txtBtn = document.getElementById('btn-entrar-txt');
-    const sp     = document.getElementById('spinner-login');
+    const sp = document.getElementById('spinner-login');
 
     btn.disabled = true;
     txtBtn.textContent = 'Verificando...';
-    sp.style.display = 'inline-block';
+    sp.style.display = 'block';
 
     try {
       const res = await chamarBackend({ action: 'validarChave', coren, chave: senha });
 
       if (res.valida) {
-        corenLogado = coren;
-        senhaLogada = senha;
-        chaveConfirmada = true;
+        corenAtual = coren;
+        senhaAtual = senha;
 
-        // Chip do profissional no topbar
-        document.getElementById('chip-coren').textContent = coren;
-        const chip = document.getElementById('chip-profissional');
-        chip.style.display = 'flex';
+        // Extrair nome simples do COREN para exibir no chip
+        nomeProf = coren;
+        document.getElementById('chip-nome').textContent = coren;
+        document.getElementById('chip-profissional').style.display = 'flex';
 
-        // Habilitar envio
-        document.getElementById('btn-enviar').disabled = false;
-        document.getElementById('rodape-hint').textContent = '';
-
-        mostrarTela('tela-form');
+        await carregarListaPacientes();
+        mostrarTela('tela-busca');
       } else {
-        erroEl.textContent = '❌ COREN ou senha inválidos.';
-        erroEl.style.display = 'block';
+        toast('COREN ou senha inválidos', 'erro');
       }
     } catch (err) {
-      erroEl.textContent = '⚠️ Erro de conexão: ' + err.message;
-      erroEl.style.display = 'block';
+      toast('Erro de conexão: ' + err.message, 'erro');
     } finally {
       btn.disabled = false;
       txtBtn.textContent = 'Entrar';
@@ -1051,490 +863,48 @@
     }
   }
 
-
-  // ── Modo de evolução ─────────────────────────────────────────
-  let modoEvolucao = 'estruturado';
-
-  function mudarModo(modo) {
-    modoEvolucao = modo;
-    document.getElementById('btn-modo-estruturado').classList.toggle('ativo', modo === 'estruturado');
-    document.getElementById('btn-modo-livre').classList.toggle('ativo', modo === 'livre');
-    document.getElementById('card-lesoes').style.display       = modo === 'estruturado' ? '' : 'none';
-    document.getElementById('card-texto-livre').style.display  = modo === 'livre'       ? '' : 'none';
-    // Ocultar/mostrar aba de Procedimentos na barra de steps
-    document.getElementById('step-tab-2').style.display        = modo === 'estruturado' ? '' : 'none';
-  }
-
-  function irParaProximo1() {
-    modoEvolucao === 'livre' ? irParaStep(3) : irParaStep(2);
-  }
-
-  function voltarDoStep3() {
-    modoEvolucao === 'livre' ? irParaStep(1) : irParaStep(2);
-  }
-
-  // ── Navegação entre steps ────────────────────────────────────
-  let stepAtual = 0;
-  const totalSteps = 4;
-
-  function irParaStep(n) {
-    document.getElementById(`sec-${stepAtual}`).classList.remove('active');
-    document.getElementById(`step-tab-${stepAtual}`).classList.remove('active');
-
-    stepAtual = n;
-    document.getElementById(`sec-${n}`).classList.add('active');
-    const tab = document.getElementById(`step-tab-${n}`);
-    tab.classList.add('active');
-    tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function marcarStepConcluido(n) {
-    const tab = document.getElementById(`step-tab-${n}`);
-    tab.classList.add('done');
-    tab.querySelector('.step-dot').textContent = '✓';
-  }
-
-  // ── Lesões ──────────────────────────────────────────────────
-  const MAX_LESOES = 10;
-  let totalLesoes = 0;
-
-  const opcoesLesao = {
-    bordas:     ['Selecione...','Regulares','Irregulares','Maceradas','Esclerosadas','Enroladas','Epibólicas','Outro'],
-    exsudato:   ['Selecione...','Seroso','Serossanguinolento','Sanguinolento','Purulento','Ausente','Outro'],
-    quantidade: ['Selecione...','Ausente','Pequena','Moderada','Grande','Outro'],
-    odor:       ['Selecione...','Ausente','Fétido','Discreto','Outro'],
-    dor:        ['Selecione...','Ausente','Ao manuseio','Persistente, com piora ao manuseio','Outro'],
-    leito:      ['Selecione...','Tecido de granulação','Fibrina','Necrose seca','Necrose úmida','Tecido de epitelização','Biofilme','Outro']
-  };
-
-  function criarSelect(id, opcoes) {
-    const s = document.createElement('select');
-    s.id = id;
-    opcoes.forEach(op => {
-      const o = document.createElement('option');
-      o.value = op === 'Selecione...' ? '' : op;
-      o.textContent = op;
-      s.appendChild(o);
-    });
-    
-    // Criar evento para mostrar/ocultar campo "outro"
-    s.addEventListener('change', function() {
-      const campoOutroId = id + '-outro-campo';
-      const campoOutro = document.getElementById(campoOutroId);
-      if (campoOutro) {
-        if (this.value === 'Outro') {
-          campoOutro.classList.add('visivel');
-          const input = campoOutro.querySelector('input');
-          if (input) setTimeout(() => input.focus(), 100);
-        } else {
-          campoOutro.classList.remove('visivel');
-          const input = campoOutro.querySelector('input');
-          if (input) input.value = '';
-        }
-      }
-    });
-    
-    return s;
-  }
-
-  function adicionarLesao() {
-    if (totalLesoes >= MAX_LESOES) return;
-    totalLesoes++;
-    const n = totalLesoes;
-    const container = document.getElementById('container-lesoes');
-
-    const bloco = document.createElement('div');
-    bloco.className = 'lesao-bloco';
-    bloco.id = `lesao-${n}`;
-
-    const header = document.createElement('div');
-    header.className = 'lesao-header';
-    const titulo = document.createElement('div');
-    titulo.className = 'lesao-titulo';
-    titulo.innerHTML = `<span>🟤</span> Lesão ${n}`;
-    header.appendChild(titulo);
-
-    if (n > 1) {
-      const btn = document.createElement('button');
-      btn.className = 'btn-remover';
-      btn.title = 'Remover lesão';
-      btn.innerHTML = '✕';
-      btn.onclick = () => { bloco.remove(); totalLesoes--; renumerarLesoes(); };
-      header.appendChild(btn);
-    }
-    bloco.appendChild(header);
-
-    const body = document.createElement('div');
-    body.className = 'lesao-body';
-
-    [{ label: 'Localização', id: `local-${n}`, ph: 'Ex: pé direito, sacral' },
-     { label: 'Tamanho da Lesão', id: `tamanho-${n}`, ph: 'Ex: 3 x 2 cm' }].forEach(c => {
-      const fld = document.createElement('div');
-      fld.className = 'field';
-      const lbl = document.createElement('label');
-      lbl.textContent = c.label;
-      fld.appendChild(lbl);
-      const inp = document.createElement('input');
-      inp.type = 'text'; inp.id = c.id; inp.placeholder = c.ph;
-      fld.appendChild(inp);
-      body.appendChild(fld);
-    });
-
-    const grid = document.createElement('div');
-    grid.className = 'grid-2';
-
-    [{ label: 'Bordas',              id: `bordas-${n}`,   opcoes: opcoesLesao.bordas },
-     { label: 'Exsudato',            id: `exsudato-${n}`, opcoes: opcoesLesao.exsudato },
-     { label: 'Quantidade Exsudato', id: `qtdExs-${n}`,   opcoes: opcoesLesao.quantidade },
-     { label: 'Odor',                id: `odor-${n}`,     opcoes: opcoesLesao.odor },
-     { label: 'Dor',                 id: `dor-${n}`,      opcoes: opcoesLesao.dor },
-     { label: 'Leito',               id: `leito-${n}`,    opcoes: opcoesLesao.leito }
-    ].forEach(s => {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'field';
-      const lbl = document.createElement('label');
-      lbl.textContent = s.label;
-      wrapper.appendChild(lbl);
-      wrapper.appendChild(criarSelect(s.id, s.opcoes));
-      
-      // Adicionar campo "outro" dinâmico
-      const campoOutro = document.createElement('div');
-      campoOutro.className = 'campo-outro';
-      campoOutro.id = s.id + '-outro-campo';
-      const labelOutro = document.createElement('label');
-      labelOutro.textContent = `Especifique outro ${s.label.toLowerCase()}:`;
-      const inputOutro = document.createElement('input');
-      inputOutro.type = 'text';
-      inputOutro.id = s.id + '-outro-input';
-      inputOutro.placeholder = `Ex: descreva o outro ${s.label.toLowerCase()}...`;
-      campoOutro.appendChild(labelOutro);
-      campoOutro.appendChild(inputOutro);
-      wrapper.appendChild(campoOutro);
-      
-      grid.appendChild(wrapper);
-    });
-
-    body.appendChild(grid);
-    bloco.appendChild(body);
-    container.appendChild(bloco);
-
-    if (totalLesoes >= MAX_LESOES) {
-      document.querySelector('.btn-adicionar').style.display = 'none';
-    }
-  }
-
-  function renumerarLesoes() {
-    const blocos = document.querySelectorAll('.lesao-bloco');
-    totalLesoes = blocos.length;
-    if (totalLesoes < MAX_LESOES) {
-      document.querySelector('.btn-adicionar').style.display = 'block';
-    }
-  }
-
-  function coletarLesoes() {
-    const blocos = document.querySelectorAll('.lesao-bloco');
-    return Array.from(blocos).map((bloco, idx) => {
-      const n = idx + 1;
-      
-      // Função auxiliar para coletar valor ou "outro"
-      const coletar = (selectId) => {
-        const valor = val(selectId);
-        if (valor === 'Outro') {
-          const outroInput = val(selectId + '-outro-input');
-          return outroInput ? `Outro: ${outroInput}` : 'Outro';
-        }
-        return valor;
-      };
-      
-      return {
-        local:              val(`local-${n}`),
-        tamanho:            val(`tamanho-${n}`),
-        bordas:             coletar(`bordas-${n}`),
-        exsudato:           coletar(`exsudato-${n}`),
-        quantidadeExsudato: coletar(`qtdExs-${n}`),
-        odor:               coletar(`odor-${n}`),
-        dor:                coletar(`dor-${n}`),
-        leito:              coletar(`leito-${n}`),
-      };
-    });
-  }
-
-  // ── Senha / validação ────────────────────────────────────────
-  async function verificarChave() {
-    const coren = val('coren');
-    const chave = val('chavePrivada');
-    const status = document.getElementById('statusChave');
-    const btnEnviar = document.getElementById('btn-enviar');
-    const hint = document.getElementById('rodape-hint');
-
-    if (!coren) {
-      status.textContent = 'Informe o COREN antes de validar.';
-      status.className = 'status-chave erro';
-      return;
-    }
-    if (!chave) {
-      status.textContent = 'Digite a senha.';
-      status.className = 'status-chave erro';
-      return;
-    }
-
-    status.textContent = 'Verificando...';
-    status.className = 'status-chave';
-    chaveConfirmada = false;
-    btnEnviar.disabled = true;
-    bloquearSteps();
+  // ── LISTA DE PACIENTES ────────────────────────────────────────────────
+  async function carregarListaPacientes() {
+    document.getElementById('busca-loading').style.display = 'flex';
+    document.getElementById('busca-instrucao').style.display = 'none';
 
     try {
-      const res = await chamarBackend({ action: 'validarChave', chave, coren });
-      if (res.valida) {
-        status.textContent = '✅ Profissional validado. Pode prosseguir.';
-        status.className = 'status-chave ok';
-        chaveConfirmada = true;
-        btnEnviar.disabled = false;
-        hint.textContent = 'Pronto para enviar';
-        marcarStepConcluido(0);
-        liberarSteps();
-      } else {
-        status.textContent = '❌ Senha inválida ou profissional inativo.';
-        status.className = 'status-chave erro';
-        hint.textContent = 'Valide sua senha para continuar';
-        bloquearSteps();
-      }
+      const nomes = await chamarBackend({ action: 'listarPacientes' });
+      pacientes = Array.isArray(nomes) ? nomes : [];
     } catch (err) {
-      status.textContent = '⚠️ Erro ao verificar. Tente novamente.';
-      status.className = 'status-chave erro';
-      bloquearSteps();
-      console.error('verificarChave:', err);
+      toast('Erro ao carregar pacientes', 'erro');
+      pacientes = [];
+    } finally {
+      document.getElementById('busca-loading').style.display = 'none';
+      document.getElementById('busca-instrucao').style.display = 'block';
     }
   }
 
-  // ── Envio ────────────────────────────────────────────────────
-  async function enviar() {
-    if (!chaveConfirmada) {
-      mostrarFeedback('erro', '⚠️ Faça login novamente para continuar.');
-      mostrarTela('tela-login');
+  // ── BUSCA / AUTOCOMPLETE ──────────────────────────────────────────────
+  function filtrarBusca() {
+    const termo = document.getElementById('busca-input').value.toLowerCase().trim();
+    const lista = document.getElementById('busca-lista');
+
+    if (termo.length < 1) {
+      lista.classList.remove('aberta');
       return;
     }
 
-    const erros = [];
-    if (!val('data'))     erros.push('Data');
-    if (!val('paciente')) erros.push('Nome do Paciente');
-
-    let lesoes = [];
-    if (modoEvolucao === 'estruturado') {
-      if (!val('limpeza'))             erros.push('Limpeza');
-      if (!val('coberturaPrimaria'))   erros.push('Cobertura Primária');
-      if (!val('coberturaSecundaria')) erros.push('Cobertura Secundária');
-      lesoes = coletarLesoes();
-      const algumLocal = lesoes.some(l => l.local.trim() !== '');
-      if (!algumLocal) erros.push('ao menos uma localização de lesão');
-    } else {
-      if (!val('textoLivre')) erros.push('Evolução em texto livre');
-    }
-
-    if (erros.length > 0) {
-      irParaStep(3);
-      mostrarFeedback('erro', 'Preencha os campos obrigatórios: ' + erros.join(', ') + '.');
-      return;
-    }
-
-    const dados = {
-      chavePrivada: senhaLogada,
-      coren:        corenLogado,
-      data:         val('data'),
-      paciente:     val('paciente'),
-      retorno:      val('retorno'),
-      lesoes,
-      modoEdicao:   modoEdicao,  // Adicionar flag de edição
-    };
-
-    if (modoEvolucao === 'estruturado') {
-      dados.limpeza             = val('limpeza');
-      dados.desbridamento       = val('desbridamento');
-      dados.observacoes         = val('observacoes');
-      dados.coberturaPrimaria   = val('coberturaPrimaria');
-      dados.coberturaSecundaria = val('coberturaSecundaria');
-      dados.orientacoes         = val('orientacoes');
-    } else {
-      dados.textoLivre = val('textoLivre');
-    }
-
-    let fotosBase64 = [];
-    try { fotosBase64 = await comprimirFotos(); } catch(e) { console.error(e); }
-    dados.fotos = fotosBase64;
-
-    document.getElementById('btn-enviar').disabled = true;
-    document.getElementById('spinner').style.display = 'block';
-    document.getElementById('feedback').style.display = 'none';
-    
-    // Mostrar mensagem diferente se editando
-    if (modoEdicao) {
-      document.getElementById('spinner-texto').textContent = ' Atualizando evolução...';
-    }
-    
-    irParaStep(3);
-
-    try {
-      const res = await chamarBackend({ action: 'processarFormulario', dados });
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('spinner-texto').textContent = ' Gerando relatório, aguarde...';
-      if (res.sucesso) {
-        if (modoEdicao) {
-          mostrarFeedback('sucesso', '✅ Evolução atualizada com sucesso! A versão anterior foi sobrescrita.');
-        }
-        // Resetar modo de edição
-        modoEdicao = false;
-        const topbar = document.querySelector('.topbar-title');
-        if (topbar) topbar.textContent = topbar.textContent.replace(' (EDIÇÃO)', '');
-        
-        mostrarSucesso(res.linkPdf, dados);
-      } else {
-        mostrarFeedback('erro', '❌ ' + res.mensagem);
-        document.getElementById('btn-enviar').disabled = false;
-      }
-    } catch (err) {
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('spinner-texto').textContent = ' Gerando relatório, aguarde...';
-      mostrarFeedback('erro', '⚠️ Erro inesperado: ' + err.message);
-      document.getElementById('btn-enviar').disabled = false;
-    }
-  }
-
-  // ── Utilitários ──────────────────────────────────────────────
-  function val(id) {
-    const el = document.getElementById(id);
-    return el ? el.value.trim() : '';
-  }
-
-  function mostrarFeedback(tipo, msg) {
-    const el = document.getElementById('feedback');
-    el.textContent = msg;
-    el.className = 'feedback-card ' + tipo;
-    el.style.display = 'block';
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
-  function mostrarSucesso(linkPdf, dados) {
-    mostrarFeedback('sucesso', '✅ Evolução registrada com sucesso! O PDF foi enviado por e-mail.');
-    const acoes = document.getElementById('sucesso-acoes');
-    const linkEl = document.getElementById('link-pdf');
-    if (linkPdf) {
-      linkEl.href = linkPdf;
-    }
-    // Armazenar os dados da última evolução para permitir edição
-    ultimosPdf = {
-      linkPdf: linkPdf,
-      dados: dados,
-      modoEdicao: false
-    };
-    modoEdicao = false;
-    acoes.style.display = 'block';
-    acoes.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  function novaEvolucao() {
-    document.getElementById('sucesso-acoes').style.display = 'none';
-    document.getElementById('feedback').style.display = 'none';
-    modoEdicao = false;
-    ultimosPdf = null;
-    limparFormulario();
-  }
-
-  function editarEvolucao() {
-    if (!ultimosPdf || !ultimosPdf.dados) {
-      mostrarFeedback('erro', '❌ Não foi possível recuperar os dados da evolução.');
-      return;
-    }
-
-    // Ativar modo de edição
-    modoEdicao = true;
-    ultimosPdf.modoEdicao = true;
-    
-    // Manter autenticação ativa
-    chaveConfirmada = true;
-
-    // Marcar visualmente que estamos editando
-    const sucesso = document.getElementById('sucesso-acoes');
-    sucesso.style.display = 'none';
-    
-    // Mostrar feedback de edição
-    mostrarFeedback('info', '✏️ Modo de edição ativado. Faça suas alterações e clique em "Enviar Evolução" para sobrescrever.');
-    
-    // Habilitar o botão de enviar
-    document.getElementById('btn-enviar').disabled = false;
-    document.getElementById('rodape-hint').textContent = '';
-    
-    // Voltar para o step 0 para editar
-    irParaStep(0);
-
-    // Adicionar indicador visual de modo edição
-    const topbar = document.querySelector('.topbar-title');
-    if (topbar && !topbar.textContent.includes('(EDIÇÃO)')) {
-      topbar.textContent += ' (EDIÇÃO)';
-    }
-  }
-
-  function limparFormulario() {
-    ['data','paciente','limpeza','observacoes','coberturaPrimaria',
-     'coberturaSecundaria','orientacoes','retorno'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.value = '';
-    });
-    document.getElementById('desbridamento').value = 'Não';
-    document.getElementById('container-lesoes').innerHTML = '';
-    arquivosFotos = [];
-    renderizarPreviews();
-    totalLesoes = 0;
-    adicionarLesao();
-    document.getElementById('btn-enviar').disabled = false;
-    document.getElementById('rodape-hint').textContent = '';
-    document.getElementById('sucesso-acoes').style.display = 'none';
-    document.querySelector('.btn-adicionar').style.display = 'block';
-    for (let i = 0; i < totalSteps; i++) {
-      const t = document.getElementById(`step-tab-${i}`);
-      t.classList.remove('done');
-      const dot = t.querySelector('.step-dot');
-      dot.textContent = i + 1;
-    }
-    document.getElementById(`sec-${stepAtual}`).classList.remove('active');
-    document.getElementById(`step-tab-${stepAtual}`).classList.remove('active');
-    stepAtual = 0;
-    document.getElementById('sec-0').classList.add('active');
-    document.getElementById('step-tab-0').classList.add('active');
-    // Resetar modo para estruturado
-    mudarModo('estruturado');
-    const tl = document.getElementById('textoLivre');
-    if (tl) tl.value = '';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // ── Pacientes ────────────────────────────────────────────────
-  let pacientesValidos = [];
-  let listaCarregada = false;
-
-  function filtrarPacientes() {
-    if (!listaCarregada) return;
-    const input = document.getElementById('paciente');
-    const lista = document.getElementById('autocomplete-lista');
-    const termo = input.value.trim().toLowerCase();
-
-    document.getElementById('aviso-paciente').style.display = 'none';
-
-    const filtrados = termo.length === 0
-      ? pacientesValidos
-      : pacientesValidos.filter(n => n.toLowerCase().includes(termo));
-
+    const filtrados = pacientes.filter(n => n.toLowerCase().includes(termo));
     lista.innerHTML = '';
 
     if (filtrados.length === 0) {
       lista.innerHTML = '<div class="autocomplete-vazio">Nenhum paciente encontrado</div>';
     } else {
-      filtrados.forEach(nome => {
+      filtrados.slice(0, 30).forEach(nome => {
         const item = document.createElement('div');
         item.className = 'autocomplete-item';
-        item.textContent = nome;
+        // Destaca o trecho que bateu
+        const idx = nome.toLowerCase().indexOf(termo);
+        item.innerHTML =
+          escapeHtml(nome.substring(0, idx)) +
+          '<strong>' + escapeHtml(nome.substring(idx, idx + termo.length)) + '</strong>' +
+          escapeHtml(nome.substring(idx + termo.length));
         item.addEventListener('mousedown', () => selecionarPaciente(nome));
         item.addEventListener('touchstart', (e) => { e.preventDefault(); selecionarPaciente(nome); }, { passive: false });
         lista.appendChild(item);
@@ -1544,117 +914,204 @@
     lista.classList.add('aberta');
   }
 
-  function selecionarPaciente(nome) {
-    const input = document.getElementById('paciente');
-    input.value = nome;
-    fecharLista();
-    document.getElementById('aviso-paciente').style.display = 'none';
-  }
-
-  function fecharLista() {
-    document.getElementById('autocomplete-lista').classList.remove('aberta');
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
   document.addEventListener('click', (e) => {
-    if (!document.getElementById('autocomplete-wrap').contains(e.target)) {
-      fecharLista();
-      const val_pac = document.getElementById('paciente').value.trim();
-      if (listaCarregada && val_pac && !pacientesValidos.includes(val_pac)) {
-        document.getElementById('aviso-paciente').style.display = 'block';
-        document.getElementById('paciente').value = '';
-      }
+    const wrap = document.querySelector('.search-box');
+    if (wrap && !wrap.contains(e.target)) {
+      document.getElementById('busca-lista').classList.remove('aberta');
     }
   });
 
-  // Carrega lista de pacientes via fetch
-  const campoPaciente = document.getElementById('paciente');
-  campoPaciente.disabled = true;
+  async function selecionarPaciente(nome) {
+    document.getElementById('busca-input').value = nome;
+    document.getElementById('busca-lista').classList.remove('aberta');
+    await abrirProntuario(nome);
+  }
 
-  chamarBackend({ action: 'listarPacientes' })
-    .then(nomes => {
-      pacientesValidos = nomes;
-      listaCarregada = true;
-      campoPaciente.placeholder = 'Digite para buscar...';
-      campoPaciente.disabled = false;
-    })
-    .catch(err => {
-      listaCarregada = true;
-      campoPaciente.placeholder = 'Nome completo';
-      campoPaciente.disabled = false;
-      console.error('Erro ao carregar pacientes:', err.message);
-      const aviso = document.getElementById('aviso-paciente');
-      aviso.textContent = '⚠️ Não foi possível carregar a lista. Verifique a planilha de Admissão.';
-      aviso.style.display = 'block';
-    });
+  // ── PRONTUÁRIO ────────────────────────────────────────────────────────
+  async function abrirProntuario(nome) {
+    mostrarTela('tela-prontuario');
 
-  // ── Fotos ────────────────────────────────────────────────────
-  let arquivosFotos = [];
+    // Reset UI
+    document.getElementById('pront-nome').textContent = nome;
+    document.getElementById('pront-meta').textContent = 'Carregando dados...';
+    const iniciais = nome.split(' ').filter(Boolean).map(p => p[0].toUpperCase()).join('').substring(0,2);
+    document.getElementById('pront-avatar').textContent = iniciais || '?';
+    document.getElementById('ficha-conteudo').style.display = 'none';
+    document.getElementById('ficha-loading').style.display = 'flex';
+    document.getElementById('timeline').innerHTML = '';
+    document.getElementById('ev-empty').style.display = 'none';
+    mudarAba('ficha');
 
-  document.getElementById('fotos-input').addEventListener('change', function() {
-    const novos = Array.from(this.files);
-    novos.forEach(file => {
-      if (!arquivosFotos.find(f => f.name === file.name && f.size === file.size)) {
-        arquivosFotos.push(file);
+    try {
+      const res = await chamarBackend({
+        action: 'obterProntuario',
+        paciente: nome,
+        coren: corenAtual,
+        chave: senhaAtual
+      });
+
+      document.getElementById('ficha-loading').style.display = 'none';
+
+      if (!res.sucesso) {
+        toast(res.mensagem || 'Erro ao carregar prontuário', 'erro');
+        return;
       }
+
+      prontuarioAtual = res;
+      renderFicha(res.cadastro, res.totalEvolucoes);
+      renderEvolucoes(res.evolucoes);
+
+    } catch (err) {
+      document.getElementById('ficha-loading').style.display = 'none';
+      toast('Erro de conexão: ' + err.message, 'erro');
+    }
+  }
+
+  function renderFicha(c, totalEv) {
+    // Cabeçalho
+    const nomeSocial = c.nomeSocial ? ` (${c.nomeSocial})` : '';
+    document.getElementById('pront-nome').textContent = c.nome + nomeSocial;
+    document.getElementById('pront-meta').textContent =
+      [c.sexo, c.idade ? c.idade + ' anos' : '', c.diagnosticos].filter(Boolean).join(' · ');
+
+    // Stats
+    const dataAdm = c.dataAdmissao || '—';
+    const anoAdm = dataAdm.includes('/') ? dataAdm.split('/')[2] : dataAdm.substring(0,4);
+    document.getElementById('stat-admissao').textContent = anoAdm || '—';
+    document.getElementById('stat-idade').textContent = c.idade || '—';
+    document.getElementById('stat-evolucoes').textContent = totalEv;
+
+    // Badge na aba
+    const badge = document.getElementById('badge-ev');
+    if (totalEv > 0) {
+      badge.textContent = totalEv;
+      badge.style.display = 'inline-flex';
+    }
+
+    // Campos da ficha
+    preencherOuVazio('fi-nome',        c.nome);
+    preencherOuVazio('fi-nomesocial',  c.nomeSocial);
+    preencherOuVazio('fi-nascimento',  c.dataNascimento);
+    preencherOuVazio('fi-sexo',        c.sexo);
+    preencherOuVazio('fi-mae',         c.nomeMae);
+    preencherOuVazio('fi-admissao',    c.dataAdmissao);
+    preencherOuVazio('fi-endereco',    c.endereco);
+    preencherOuVazio('fi-contato',     c.contato);
+    preencherOuVazio('fi-diagnosticos', c.diagnosticos);
+    preencherOuVazio('fi-comorbidades', c.comorbidades);
+    preencherOuVazio('fi-historico',   c.historicoSaude);
+    preencherOuVazio('fi-medicamentos', c.medicamentos);
+    preencherOuVazio('fi-vicios',      c.vicios);
+
+    // Evolução inicial
+    const evInicial = c.evolucaoInicialGeral;
+    if (evInicial && evInicial.trim()) {
+      document.getElementById('fi-evolucao-inicial').textContent = evInicial;
+      document.getElementById('fi-evolucao-inicial-wrap').style.display = 'block';
+    } else {
+      document.getElementById('fi-evolucao-inicial-wrap').style.display = 'none';
+    }
+
+    document.getElementById('ficha-conteudo').style.display = 'block';
+  }
+
+  function renderEvolucoes(evolucoes) {
+    const timeline = document.getElementById('timeline');
+    const empty    = document.getElementById('ev-empty');
+    timeline.innerHTML = '';
+
+    if (!evolucoes || evolucoes.length === 0) {
+      empty.style.display = 'block';
+      return;
+    }
+
+    empty.style.display = 'none';
+    let ultimaData = '';
+
+    evolucoes.forEach((ev, idx) => {
+      const dtObj = new Date(ev.dataHora);
+      const dataFmt = isNaN(dtObj) ? ev.dataHora : dtObj.toLocaleDateString('pt-BR');
+      const horaFmt = isNaN(dtObj) ? '' : dtObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+      // Separador de data
+      if (dataFmt !== ultimaData) {
+        const sep = document.createElement('div');
+        sep.className = 'data-sep';
+        sep.innerHTML = `<span>${dataFmt}</span>`;
+        timeline.appendChild(sep);
+        ultimaData = dataFmt;
+      }
+
+      const card = document.createElement('div');
+      card.className = 'ev-card' + (idx === evolucoes.length - 1 ? ' primeira-evolucao' : '');
+
+      const tagPrimeira = idx === evolucoes.length - 1
+        ? '<span class="tag-primeira">⭐ 1ª Evolução</span>'
+        : '';
+
+      card.innerHTML = `
+        <div class="ev-card-header">
+          <div>
+            <div class="ev-data">${dataFmt}${horaFmt ? ' às ' + horaFmt : ''}</div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            ${tagPrimeira}
+            <span class="ev-status">✓ ${ev.status || 'Registrado'}</span>
+          </div>
+        </div>
+        <div class="ev-card-body">
+          <div class="ev-prof-row">
+            <div class="ev-prof-field">
+              <div class="ev-label">COREN</div>
+              <div class="ev-value">${ev.coren || '—'}</div>
+            </div>
+            <div class="ev-prof-field">
+              <div class="ev-label">Profissional</div>
+              <div class="ev-value">${ev.profissional || '—'}</div>
+            </div>
+          </div>
+          <div class="ev-label" style="margin-bottom:8px">Evolução</div>
+          <div class="ev-texto">${escapeHtml(ev.textoCompleto || '—')}</div>
+        </div>
+        <div class="ev-card-footer">
+          ${ev.linkPdf
+            ? `<a href="${ev.linkPdf}" target="_blank" rel="noopener" class="btn-pdf">📄 Ver PDF</a>`
+            : `<button class="btn-pdf" disabled>📄 Sem PDF</button>`
+          }
+        </div>
+      `;
+
+      timeline.appendChild(card);
     });
-    this.value = '';
-    renderizarPreviews();
+  }
+
+  // ── ABAS ──────────────────────────────────────────────────────────────
+  function mudarAba(aba) {
+    document.querySelectorAll('.aba-btn').forEach(b => {
+      b.classList.toggle('ativa', b.dataset.aba === aba);
+    });
+    document.querySelectorAll('.aba-painel').forEach(p => {
+      p.classList.toggle('ativo', p.id === 'painel-' + aba);
+    });
+  }
+
+  // ── VOLTAR BUSCA ──────────────────────────────────────────────────────
+  function voltarBusca() {
+    document.getElementById('busca-input').value = '';
+    document.getElementById('busca-lista').classList.remove('aberta');
+    mostrarTela('tela-busca');
+  }
+
+  // ── INICIALIZAÇÃO ─────────────────────────────────────────────────────
+  // Foco automático no campo COREN ao carregar
+  window.addEventListener('load', () => {
+    document.getElementById('login-coren').focus();
   });
-
-  function renderizarPreviews() {
-    const container = document.getElementById('preview-container');
-    const count = document.getElementById('fotos-count');
-    container.innerHTML = '';
-    count.textContent = arquivosFotos.length > 0
-      ? `${arquivosFotos.length} foto(s) selecionada(s)`
-      : '';
-
-    arquivosFotos.forEach((file, idx) => {
-      const item = document.createElement('div');
-      item.className = 'preview-item';
-      const img = document.createElement('img');
-      img.src = URL.createObjectURL(file);
-      img.onload = () => URL.revokeObjectURL(img.src);
-      const nome = document.createElement('div');
-      nome.className = 'foto-nome';
-      nome.textContent = file.name;
-      const btnRem = document.createElement('button');
-      btnRem.className = 'btn-remover-foto';
-      btnRem.textContent = '✕';
-      btnRem.title = 'Remover foto';
-      btnRem.onclick = () => { arquivosFotos.splice(idx, 1); renderizarPreviews(); };
-      item.appendChild(img);
-      item.appendChild(nome);
-      item.appendChild(btnRem);
-      container.appendChild(item);
-    });
-  }
-
-  function comprimirFotos() {
-    const MAX_W = 1600, QUALIDADE = 0.75;
-    return Promise.all(arquivosFotos.map(file => new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onerror = reject;
-      reader.onload = e => {
-        const img = new Image();
-        img.onerror = reject;
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          let w = img.width, h = img.height;
-          if (w > MAX_W) { h = Math.round(h * MAX_W / w); w = MAX_W; }
-          canvas.width = w; canvas.height = h;
-          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          const base64 = canvas.toDataURL('image/jpeg', QUALIDADE).split(',')[1];
-          resolve({ nome: file.name, base64, tipo: 'image/jpeg' });
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    })));
-  }
-
-  // ── Inicializar ──────────────────────────────────────────────
-  adicionarLesao();
 </script>
+
 </body>
 </html>
