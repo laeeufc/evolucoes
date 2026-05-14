@@ -622,6 +622,27 @@
     }
     .btn-download:active { background: #0e3f7a; }
 
+    /* ── Botão de ação secundária ── */
+    .btn-acao-secundaria {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 15px;
+      background: #f59e0b;
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.18s;
+    }
+    .btn-acao-secundaria:active { background: #d97706; }
+    .btn-acao-secundaria:hover { background: #f59e0b; }
+
     #btn-nova-evolucao {
       display: block;
       width: 100%;
@@ -929,6 +950,9 @@
         <a id="link-pdf" href="#" target="_blank" rel="noopener" class="btn-download">
           📄 Abrir / Baixar PDF
         </a>
+        <button id="btn-editar-evolucao" onclick="editarEvolucao()" class="btn-acao-secundaria">
+          ✏️ Editar Evolução
+        </button>
         <button id="btn-nova-evolucao" onclick="novaEvolucao()">+ Nova Evolução</button>
       </div>
     </div>
@@ -964,6 +988,8 @@
   let corenLogado  = '';
   let senhaLogada  = '';
   let chaveConfirmada = false;
+  let modoEdicao   = false;  // Flag para controlar se está editando
+  let ultimosPdf   = null;   // Armazenar dados do último PDF enviado
 
   // ── Telas ────────────────────────────────────────────────────
   function mostrarTela(id) {
@@ -1321,6 +1347,7 @@
       paciente:     val('paciente'),
       retorno:      val('retorno'),
       lesoes,
+      modoEdicao:   modoEdicao,  // Adicionar flag de edição
     };
 
     if (modoEvolucao === 'estruturado') {
@@ -1341,13 +1368,27 @@
     document.getElementById('btn-enviar').disabled = true;
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('feedback').style.display = 'none';
+    
+    // Mostrar mensagem diferente se editando
+    if (modoEdicao) {
+      document.getElementById('spinner').querySelector('span').textContent = '↻ Atualizando evolução';
+    }
+    
     irParaStep(3);
 
     try {
       const res = await chamarBackend({ action: 'processarFormulario', dados });
       document.getElementById('spinner').style.display = 'none';
       if (res.sucesso) {
-        mostrarSucesso(res.linkPdf);
+        if (modoEdicao) {
+          mostrarFeedback('sucesso', '✅ Evolução atualizada com sucesso! A versão anterior foi sobrescrita.');
+        }
+        // Resetar modo de edição
+        modoEdicao = false;
+        const topbar = document.querySelector('.topbar-title');
+        if (topbar) topbar.textContent = topbar.textContent.replace(' (EDIÇÃO)', '');
+        
+        mostrarSucesso(res.linkPdf, dados);
       } else {
         mostrarFeedback('erro', '❌ ' + res.mensagem);
         document.getElementById('btn-enviar').disabled = false;
@@ -1373,13 +1414,20 @@
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  function mostrarSucesso(linkPdf) {
+  function mostrarSucesso(linkPdf, dados) {
     mostrarFeedback('sucesso', '✅ Evolução registrada com sucesso! O PDF foi enviado por e-mail.');
     const acoes = document.getElementById('sucesso-acoes');
     const linkEl = document.getElementById('link-pdf');
     if (linkPdf) {
       linkEl.href = linkPdf;
     }
+    // Armazenar os dados da última evolução para permitir edição
+    ultimosPdf = {
+      linkPdf: linkPdf,
+      dados: dados,
+      modoEdicao: false
+    };
+    modoEdicao = false;
     acoes.style.display = 'block';
     acoes.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
@@ -1387,7 +1435,36 @@
   function novaEvolucao() {
     document.getElementById('sucesso-acoes').style.display = 'none';
     document.getElementById('feedback').style.display = 'none';
+    modoEdicao = false;
+    ultimosPdf = null;
     limparFormulario();
+  }
+
+  function editarEvolucao() {
+    if (!ultimosPdf || !ultimosPdf.dados) {
+      mostrarFeedback('erro', '❌ Não foi possível recuperar os dados da evolução.');
+      return;
+    }
+
+    // Ativar modo de edição
+    modoEdicao = true;
+    ultimosPdf.modoEdicao = true;
+
+    // Marcar visualmente que estamos editando
+    const sucesso = document.getElementById('sucesso-acoes');
+    sucesso.style.display = 'none';
+    
+    // Mostrar feedback de edição
+    mostrarFeedback('info', '✏️ Modo de edição ativado. Faça suas alterações e clique em "Enviar Evolução" para sobrescrever.');
+    
+    // Voltar para o step 0 para editar
+    irParaStep(0);
+
+    // Adicionar indicador visual de modo edição
+    const topbar = document.querySelector('.topbar-title');
+    if (topbar && !topbar.textContent.includes('(EDIÇÃO)')) {
+      topbar.textContent += ' (EDIÇÃO)';
+    }
   }
 
   function limparFormulario() {
