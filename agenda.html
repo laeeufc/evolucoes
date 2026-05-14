@@ -223,6 +223,35 @@
     .cal-day.selecionado .cal-dot { background: rgba(255,255,255,0.8); }
     .cal-dots { min-height: 7px; display: flex; gap: 2px; justify-content: center; }
 
+    /* ── Primeira consulta ── */
+    .cal-day.tem-primeira { background: #fff7ed; border-top: 2px solid #f59e0b; }
+    .cal-day.tem-primeira.selecionado { background: var(--blue) !important; border-top-color: #f59e0b; }
+    .cal-dot.dot-primeira { background: #f59e0b; }
+    .badge-primeira {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      background: #fef3c7; color: #92400e;
+      border: 1px solid #fcd34d; border-radius: 20px;
+      padding: 1px 7px; margin-left: 6px; vertical-align: middle;
+    }
+    /* ── Campo novo paciente ── */
+    #wrap-novo-paciente {
+      display: none; margin-top: 8px;
+    }
+    #wrap-novo-paciente input {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 15px; color: var(--text);
+      background: #fffbeb; outline: none;
+    }
+    #wrap-novo-paciente input:focus { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,0.15); }
+    .opcao-primeira {
+      padding: 10px 14px; cursor: pointer;
+      font-weight: 700; color: #92400e;
+      background: #fffbeb; border-top: 1px solid #fde68a;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .opcao-primeira:hover { background: #fef3c7; }
+
     /* ── Legenda / botão novo ── */
     .cal-footer {
       padding: 14px 16px;
@@ -473,7 +502,11 @@
           <button class="cal-nav-btn" onclick="navegarMes(1)">›</button>
         </div>
         <div class="cal-grid" id="cal-grid"></div>
-        <div class="cal-footer">
+        <div class="cal-footer" style="flex-wrap:wrap; gap:8px;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#92400e;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#f59e0b;flex-shrink:0;"></div>
+        Primeira consulta
+      </div>
           <button class="hoje-btn" onclick="irParaHoje()">Hoje</button>
           <button class="btn-novo" onclick="abrirModalNovo()">＋ Novo agendamento</button>
         </div>
@@ -518,11 +551,14 @@
       <div class="field">
         <label for="ag-paciente">Paciente <span style="color:var(--red)">*</span></label>
         <div class="autocomplete-wrap">
-          <input type="text" id="ag-paciente" placeholder="Digite para buscar..."
+          <input type="text" id="ag-paciente" placeholder="Digite para buscar ou selecione Primeira Vez..."
                  autocomplete="off"
                  oninput="filtrarPacientesModal()"
                  onfocus="filtrarPacientesModal()">
           <div class="autocomplete-lista" id="ac-lista"></div>
+        </div>
+        <div id="wrap-novo-paciente">
+          <input type="text" id="ag-novo-paciente" placeholder="Nome completo do novo paciente...">
         </div>
       </div>
       <div class="field">
@@ -671,24 +707,56 @@
   }
 
   // ── Autocomplete de pacientes no modal ────────────────────────
+  function setNovoPacienteVisivel(visivel) {
+    document.getElementById('wrap-novo-paciente').style.display = visivel ? 'block' : 'none';
+    if (!visivel) document.getElementById('ag-novo-paciente').value = '';
+  }
+
   function filtrarPacientesModal() {
     const input = document.getElementById('ag-paciente');
     const lista = document.getElementById('ac-lista');
     const termo = input.value.toLowerCase().trim();
     lista.innerHTML = '';
-    if (termo.length < 1) { lista.classList.remove('aberta'); return; }
-    const filtrados = pacientes.filter(n => n.toLowerCase().includes(termo)).slice(0, 20);
-    if (filtrados.length === 0) { lista.classList.remove('aberta'); return; }
-    filtrados.forEach(nome => {
-      const item = document.createElement('div');
-      item.className = 'autocomplete-item';
-      item.textContent = nome;
-      item.addEventListener('mousedown', () => {
-        input.value = nome;
-        lista.classList.remove('aberta');
-      });
-      lista.appendChild(item);
+
+    // Quando selecionou "Primeira Vez", não exibe lista
+    if (input.dataset.primeiraVez === 'true') {
+      lista.classList.remove('aberta');
+      return;
+    }
+
+    setNovoPacienteVisivel(false);
+
+    // Sempre exibe opção "Primeira Vez" no topo
+    const optPrimeira = document.createElement('div');
+    optPrimeira.className = 'opcao-primeira';
+    optPrimeira.innerHTML = '⭐ Primeira Vez — Novo Paciente';
+    optPrimeira.addEventListener('mousedown', () => {
+      input.value = '⭐ Primeira Vez';
+      input.dataset.primeiraVez = 'true';
+      lista.classList.remove('aberta');
+      setNovoPacienteVisivel(true);
+      // Selecionar automaticamente "Primeira consulta" no procedimento
+      const sel = document.getElementById('ag-procedimento');
+      if (sel && !sel.value) sel.value = 'Primeira consulta';
     });
+    lista.appendChild(optPrimeira);
+
+    if (termo.length >= 1) {
+      const filtrados = pacientes.filter(n => n.toLowerCase().includes(termo)).slice(0, 20);
+      filtrados.forEach(nome => {
+        const item = document.createElement('div');
+        item.className = 'autocomplete-item';
+        item.textContent = nome;
+        item.addEventListener('mousedown', () => {
+          input.value = nome;
+          input.dataset.primeiraVez = 'false';
+          lista.classList.remove('aberta');
+          setNovoPacienteVisivel(false);
+        });
+        lista.appendChild(item);
+      });
+    }
+
     lista.classList.add('aberta');
   }
 
@@ -724,11 +792,14 @@
 
     // Agendamentos do mês indexados por dia
     const agendPorDia = {};
+    const primeiraPorDia = {};
     agendamentos.forEach(ag => {
       if (!ag.data) return;
       const [a, m, d] = ag.data.split('-').map(Number);
       if (a === anoSelecionado && m - 1 === mesSelecionado) {
         agendPorDia[d] = (agendPorDia[d] || []).concat(ag);
+        const isPrimeira = ag.procedimento === 'Primeira consulta' || ag.primeiraVez === true;
+        if (isPrimeira) primeiraPorDia[d] = true;
       }
     });
 
@@ -754,10 +825,14 @@
       const lista = agendPorDia[dia] || [];
       if (lista.length > 0) {
         el.classList.add('tem-agenda');
+        if (primeiraPorDia[dia]) el.classList.add('tem-primeira');
         const maxDots = Math.min(lista.length, 3);
         for (let k = 0; k < maxDots; k++) {
           const dot = document.createElement('div');
-          dot.className = 'cal-dot';
+          // dot amarelo se algum agendamento do dia é primeira consulta
+          const ag = lista[k];
+          const isPrimeira = ag.procedimento === 'Primeira consulta' || ag.primeiraVez === true;
+          dot.className = 'cal-dot' + (isPrimeira ? ' dot-primeira' : '');
           dotsEl.appendChild(dot);
         }
       }
@@ -851,8 +926,10 @@
       if (ag.status)       metas.push(`● ${ag.status}`);
       if (ag.observacao)   metas.push(`📝 ${ag.observacao}`);
 
+      const badgePrimeira = (ag.procedimento === 'Primeira consulta' || ag.primeiraVez)
+        ? '<span class="badge-primeira">⭐ 1ª vez</span>' : '';
       info.innerHTML = `
-        <div class="agend-paciente">${ag.paciente || '—'}</div>
+        <div class="agend-paciente">${ag.paciente || '—'}${badgePrimeira}</div>
         <div class="agend-meta">${metas.join(' &nbsp;·&nbsp; ')}</div>`;
 
       const acoes = document.createElement('div');
@@ -912,6 +989,8 @@
     }
 
     document.getElementById('ag-paciente').value = '';
+    document.getElementById('ag-paciente').dataset.primeiraVez = 'false';
+    setNovoPacienteVisivel(false);
     document.getElementById('ag-profissional').value = corenLogado;
     document.getElementById('ag-procedimento').value = '';
     document.getElementById('ag-status').value = 'Pendente';
@@ -927,6 +1006,8 @@
 
     document.getElementById('ag-data').value          = ag.data || '';
     document.getElementById('ag-paciente').value      = ag.paciente || '';
+    document.getElementById('ag-paciente').dataset.primeiraVez = 'false';
+    setNovoPacienteVisivel(false);
     document.getElementById('ag-profissional').value  = ag.profissional || '';
     document.getElementById('ag-procedimento').value  = ag.procedimento || '';
     document.getElementById('ag-status').value        = ag.status || 'Pendente';
@@ -946,14 +1027,21 @@
 
   async function salvarAgendamento() {
     const data        = document.getElementById('ag-data').value;
-    const paciente    = document.getElementById('ag-paciente').value.trim();
+    const inputPaciente = document.getElementById('ag-paciente');
+    const ehPrimeiraVez = inputPaciente.dataset.primeiraVez === 'true';
+    const paciente    = ehPrimeiraVez
+      ? document.getElementById('ag-novo-paciente').value.trim()
+      : inputPaciente.value.trim();
     const profissional= document.getElementById('ag-profissional').value.trim();
     const procedimento= document.getElementById('ag-procedimento').value;
     const status      = document.getElementById('ag-status').value;
     const observacao  = document.getElementById('ag-observacao').value.trim();
 
     if (!data)     { toast('Informe a data', 'erro'); return; }
-    if (!paciente) { toast('Informe o paciente', 'erro'); return; }
+    if (!paciente) {
+      toast(ehPrimeiraVez ? 'Informe o nome do novo paciente' : 'Informe o paciente', 'erro');
+      return;
+    }
 
     const btn = document.getElementById('btn-salvar');
     const txt = document.getElementById('btn-salvar-txt');
@@ -962,7 +1050,9 @@
 
     const payload = {
       action: editandoId !== null ? 'editarAgendamento' : 'criarAgendamento',
-      agendamento: { id: editandoId, data, paciente, profissional, procedimento, status, observacao }
+      agendamento: { id: editandoId, data, paciente, profissional, procedimento, status,
+                     observacao, primeiraVez: ehPrimeiraVez },
+      coren: corenLogado
     };
 
     try {
