@@ -669,6 +669,41 @@
       box-shadow: 0 1px 5px rgba(0,0,0,0.12);
     }
     .modo-btn:not(.ativo):active { background: #e5e7eb; }
+
+    /* ── Campo "Outro" dinâmico ── */
+    .campo-outro {
+      display: none;
+      margin-top: 8px;
+      padding: 12px;
+      background: var(--blue-light);
+      border-radius: 8px;
+      border-left: 3px solid var(--blue);
+    }
+    .campo-outro.visivel {
+      display: block;
+    }
+    .campo-outro input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--blue);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text);
+      background: #fff;
+    }
+    .campo-outro input:focus {
+      outline: none;
+      border-color: var(--blue-mid);
+      box-shadow: 0 0 0 3px rgba(45, 125, 214, 0.15);
+    }
+    .campo-outro label {
+      font-size: 13px;
+      margin-bottom: 5px;
+      color: var(--blue);
+      font-weight: 600;
+    }
+
     /* ── Desktop ── */
     @media (min-width: 680px) {
       body { padding-top: 0; }
@@ -1040,12 +1075,12 @@
   let totalLesoes = 0;
 
   const opcoesLesao = {
-    bordas:     ['Selecione...','Regulares','Irregulares','Maceradas','Esclerosadas','Enroladas','Epibólicas'],
-    exsudato:   ['Selecione...','Seroso','Serossanguinolento','Sanguinolento','Purulento','Ausente'],
-    quantidade: ['Selecione...','Ausente','Pequena','Moderada','Grande'],
-    odor:       ['Selecione...','Ausente','Fétido','Discreto'],
-    dor:        ['Selecione...','Ausente','Ao manuseio','Persistente, com piora ao manuseio'],
-    leito:      ['Selecione...','Tecido de granulação','Fibrina','Necrose seca','Necrose úmida','Tecido de epitelização','Biofilme']
+    bordas:     ['Selecione...','Regulares','Irregulares','Maceradas','Esclerosadas','Enroladas','Epibólicas','Outro'],
+    exsudato:   ['Selecione...','Seroso','Serossanguinolento','Sanguinolento','Purulento','Ausente','Outro'],
+    quantidade: ['Selecione...','Ausente','Pequena','Moderada','Grande','Outro'],
+    odor:       ['Selecione...','Ausente','Fétido','Discreto','Outro'],
+    dor:        ['Selecione...','Ausente','Ao manuseio','Persistente, com piora ao manuseio','Outro'],
+    leito:      ['Selecione...','Tecido de granulação','Fibrina','Necrose seca','Necrose úmida','Tecido de epitelização','Biofilme','Outro']
   };
 
   function criarSelect(id, opcoes) {
@@ -1057,6 +1092,24 @@
       o.textContent = op;
       s.appendChild(o);
     });
+    
+    // Criar evento para mostrar/ocultar campo "outro"
+    s.addEventListener('change', function() {
+      const campoOutroId = id + '-outro-campo';
+      const campoOutro = document.getElementById(campoOutroId);
+      if (campoOutro) {
+        if (this.value === 'Outro') {
+          campoOutro.classList.add('visivel');
+          const input = campoOutro.querySelector('input');
+          if (input) setTimeout(() => input.focus(), 100);
+        } else {
+          campoOutro.classList.remove('visivel');
+          const input = campoOutro.querySelector('input');
+          if (input) input.value = '';
+        }
+      }
+    });
+    
     return s;
   }
 
@@ -1119,6 +1172,21 @@
       lbl.textContent = s.label;
       wrapper.appendChild(lbl);
       wrapper.appendChild(criarSelect(s.id, s.opcoes));
+      
+      // Adicionar campo "outro" dinâmico
+      const campoOutro = document.createElement('div');
+      campoOutro.className = 'campo-outro';
+      campoOutro.id = s.id + '-outro-campo';
+      const labelOutro = document.createElement('label');
+      labelOutro.textContent = `Especifique outro ${s.label.toLowerCase()}:`;
+      const inputOutro = document.createElement('input');
+      inputOutro.type = 'text';
+      inputOutro.id = s.id + '-outro-input';
+      inputOutro.placeholder = `Ex: descreva o outro ${s.label.toLowerCase()}...`;
+      campoOutro.appendChild(labelOutro);
+      campoOutro.appendChild(inputOutro);
+      wrapper.appendChild(campoOutro);
+      
       grid.appendChild(wrapper);
     });
 
@@ -1143,15 +1211,26 @@
     const blocos = document.querySelectorAll('.lesao-bloco');
     return Array.from(blocos).map((bloco, idx) => {
       const n = idx + 1;
+      
+      // Função auxiliar para coletar valor ou "outro"
+      const coletar = (selectId) => {
+        const valor = val(selectId);
+        if (valor === 'Outro') {
+          const outroInput = val(selectId + '-outro-input');
+          return outroInput ? `Outro: ${outroInput}` : 'Outro';
+        }
+        return valor;
+      };
+      
       return {
         local:              val(`local-${n}`),
         tamanho:            val(`tamanho-${n}`),
-        bordas:             val(`bordas-${n}`),
-        exsudato:           val(`exsudato-${n}`),
-        quantidadeExsudato: val(`qtdExs-${n}`),
-        odor:               val(`odor-${n}`),
-        dor:                val(`dor-${n}`),
-        leito:              val(`leito-${n}`),
+        bordas:             coletar(`bordas-${n}`),
+        exsudato:           coletar(`exsudato-${n}`),
+        quantidadeExsudato: coletar(`qtdExs-${n}`),
+        odor:               coletar(`odor-${n}`),
+        dor:                coletar(`dor-${n}`),
+        leito:              coletar(`leito-${n}`),
       };
     });
   }
