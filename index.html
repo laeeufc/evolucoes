@@ -1449,6 +1449,9 @@
     // Ativar modo de edição
     modoEdicao = true;
     ultimosPdf.modoEdicao = true;
+    
+    // Manter autenticação ativa
+    chaveConfirmada = true;
 
     // Marcar visualmente que estamos editando
     const sucesso = document.getElementById('sucesso-acoes');
@@ -1456,6 +1459,10 @@
     
     // Mostrar feedback de edição
     mostrarFeedback('info', '✏️ Modo de edição ativado. Faça suas alterações e clique em "Enviar Evolução" para sobrescrever.');
+    
+    // Habilitar o botão de enviar
+    document.getElementById('btn-enviar').disabled = false;
+    document.getElementById('rodape-hint').textContent = '';
     
     // Voltar para o step 0 para editar
     irParaStep(0);
