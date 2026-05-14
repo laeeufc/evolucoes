@@ -943,7 +943,7 @@
 
     <div class="card">
       <div class="spinner" id="spinner">
-        <span class="spinner-ring"></span> Gerando relatório, aguarde...
+        <span class="spinner-ring"></span><span id="spinner-texto"> Gerando relatório, aguarde...</span>
       </div>
       <div class="feedback-card" id="feedback"></div>
       <div id="sucesso-acoes" style="display:none">
@@ -1371,7 +1371,7 @@
     
     // Mostrar mensagem diferente se editando
     if (modoEdicao) {
-      document.getElementById('spinner').querySelector('span').textContent = '↻ Atualizando evolução';
+      document.getElementById('spinner-texto').textContent = ' Atualizando evolução...';
     }
     
     irParaStep(3);
@@ -1379,6 +1379,7 @@
     try {
       const res = await chamarBackend({ action: 'processarFormulario', dados });
       document.getElementById('spinner').style.display = 'none';
+      document.getElementById('spinner-texto').textContent = ' Gerando relatório, aguarde...';
       if (res.sucesso) {
         if (modoEdicao) {
           mostrarFeedback('sucesso', '✅ Evolução atualizada com sucesso! A versão anterior foi sobrescrita.');
@@ -1395,6 +1396,7 @@
       }
     } catch (err) {
       document.getElementById('spinner').style.display = 'none';
+      document.getElementById('spinner-texto').textContent = ' Gerando relatório, aguarde...';
       mostrarFeedback('erro', '⚠️ Erro inesperado: ' + err.message);
       document.getElementById('btn-enviar').disabled = false;
     }
