@@ -639,6 +639,36 @@
     }
     #btn-nova-evolucao:active { background: #f3f4f6; }
 
+
+    /* ── Toggle de modo de evolução ── */
+    .modo-toggle {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      background: #f3f4f6;
+      padding: 5px;
+      border-radius: 12px;
+    }
+    .modo-btn {
+      flex: 1;
+      padding: 11px 10px;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      background: transparent;
+      color: var(--muted);
+      transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+      min-height: 46px;
+    }
+    .modo-btn.ativo {
+      background: var(--surface);
+      color: var(--blue);
+      box-shadow: 0 1px 5px rgba(0,0,0,0.12);
+    }
+    .modo-btn:not(.ativo):active { background: #e5e7eb; }
     /* ── Desktop ── */
     @media (min-width: 680px) {
       body { padding-top: 0; }
@@ -751,9 +781,17 @@
     </div>
   </div>
 
-  <!-- STEP 1 — Lesões -->
+  <!-- STEP 1 — Lesões / Texto Livre -->
   <div class="section" id="sec-1">
-    <div class="card">
+
+    <!-- Toggle de modo -->
+    <div class="modo-toggle">
+      <button class="modo-btn ativo" id="btn-modo-estruturado" onclick="mudarModo('estruturado')">📋 Estruturado</button>
+      <button class="modo-btn" id="btn-modo-livre" onclick="mudarModo('livre')">✏️ Texto Livre</button>
+    </div>
+
+    <!-- Card Lesões (modo estruturado) -->
+    <div id="card-lesoes" class="card">
       <div class="card-title">
         <div class="card-title-icon">🩹</div>
         Lesões
@@ -762,9 +800,21 @@
       <button class="btn-adicionar" onclick="adicionarLesao()">+ Adicionar lesão</button>
     </div>
 
+    <!-- Card Texto Livre -->
+    <div id="card-texto-livre" class="card" style="display:none">
+      <div class="card-title">
+        <div class="card-title-icon">✏️</div>
+        Evolução Clínica
+      </div>
+      <div class="field">
+        <textarea id="textoLivre" placeholder="Descreva a evolução clínica livremente...&#10;&#10;Ex: Paciente compareceu ao ambulatório para troca de curativo. Lesão em pé direito com bordas regulares, exsudato seroso em pequena quantidade..." style="min-height:280px"></textarea>
+        <small class="hint">O texto será registrado e incluído no PDF exatamente como digitado.</small>
+      </div>
+    </div>
+
     <div class="nav-row">
       <button class="btn-nav" onclick="irParaStep(0)">← Voltar</button>
-      <button class="btn-nav primary" onclick="irParaStep(2)">Próximo →</button>
+      <button class="btn-nav primary" onclick="irParaProximo1()">Próximo →</button>
     </div>
   </div>
 
@@ -849,7 +899,7 @@
     </div>
 
     <div class="nav-row">
-      <button class="btn-nav" onclick="irParaStep(2)">← Voltar</button>
+      <button class="btn-nav" onclick="voltarDoStep3()">← Voltar</button>
     </div>
 
     <button id="btn-enviar" onclick="enviar()">✉️ Enviar Evolução</button>
@@ -938,6 +988,28 @@
       txtBtn.textContent = 'Entrar';
       sp.style.display = 'none';
     }
+  }
+
+
+  // ── Modo de evolução ─────────────────────────────────────────
+  let modoEvolucao = 'estruturado';
+
+  function mudarModo(modo) {
+    modoEvolucao = modo;
+    document.getElementById('btn-modo-estruturado').classList.toggle('ativo', modo === 'estruturado');
+    document.getElementById('btn-modo-livre').classList.toggle('ativo', modo === 'livre');
+    document.getElementById('card-lesoes').style.display       = modo === 'estruturado' ? '' : 'none';
+    document.getElementById('card-texto-livre').style.display  = modo === 'livre'       ? '' : 'none';
+    // Ocultar/mostrar aba de Procedimentos na barra de steps
+    document.getElementById('step-tab-2').style.display        = modo === 'estruturado' ? '' : 'none';
+  }
+
+  function irParaProximo1() {
+    modoEvolucao === 'livre' ? irParaStep(3) : irParaStep(2);
+  }
+
+  function voltarDoStep3() {
+    modoEvolucao === 'livre' ? irParaStep(1) : irParaStep(2);
   }
 
   // ── Navegação entre steps ────────────────────────────────────
@@ -1142,15 +1214,20 @@
     }
 
     const erros = [];
-    if (!val('data'))                erros.push('Data');
-    if (!val('paciente'))            erros.push('Nome do Paciente');
-    if (!val('limpeza'))             erros.push('Limpeza');
-    if (!val('coberturaPrimaria'))   erros.push('Cobertura Primária');
-    if (!val('coberturaSecundaria')) erros.push('Cobertura Secundária');
+    if (!val('data'))     erros.push('Data');
+    if (!val('paciente')) erros.push('Nome do Paciente');
 
-    const lesoes = coletarLesoes();
-    const algumLocal = lesoes.some(l => l.local.trim() !== '');
-    if (!algumLocal) erros.push('ao menos uma localização de lesão');
+    let lesoes = [];
+    if (modoEvolucao === 'estruturado') {
+      if (!val('limpeza'))             erros.push('Limpeza');
+      if (!val('coberturaPrimaria'))   erros.push('Cobertura Primária');
+      if (!val('coberturaSecundaria')) erros.push('Cobertura Secundária');
+      lesoes = coletarLesoes();
+      const algumLocal = lesoes.some(l => l.local.trim() !== '');
+      if (!algumLocal) erros.push('ao menos uma localização de lesão');
+    } else {
+      if (!val('textoLivre')) erros.push('Evolução em texto livre');
+    }
 
     if (erros.length > 0) {
       irParaStep(3);
@@ -1159,19 +1236,24 @@
     }
 
     const dados = {
-      chavePrivada:        senhaLogada,
-      coren:               corenLogado,
-      data:                val('data'),
-      paciente:            val('paciente'),
-      limpeza:             val('limpeza'),
-      desbridamento:       val('desbridamento'),
-      observacoes:         val('observacoes'),
-      coberturaPrimaria:   val('coberturaPrimaria'),
-      coberturaSecundaria: val('coberturaSecundaria'),
-      orientacoes:         val('orientacoes'),
-      retorno:             val('retorno'),
+      chavePrivada: senhaLogada,
+      coren:        corenLogado,
+      data:         val('data'),
+      paciente:     val('paciente'),
+      retorno:      val('retorno'),
       lesoes,
     };
+
+    if (modoEvolucao === 'estruturado') {
+      dados.limpeza             = val('limpeza');
+      dados.desbridamento       = val('desbridamento');
+      dados.observacoes         = val('observacoes');
+      dados.coberturaPrimaria   = val('coberturaPrimaria');
+      dados.coberturaSecundaria = val('coberturaSecundaria');
+      dados.orientacoes         = val('orientacoes');
+    } else {
+      dados.textoLivre = val('textoLivre');
+    }
 
     let fotosBase64 = [];
     try { fotosBase64 = await comprimirFotos(); } catch(e) { console.error(e); }
@@ -1256,6 +1338,10 @@
     stepAtual = 0;
     document.getElementById('sec-0').classList.add('active');
     document.getElementById('step-tab-0').classList.add('active');
+    // Resetar modo para estruturado
+    mudarModo('estruturado');
+    const tl = document.getElementById('textoLivre');
+    if (tl) tl.value = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
